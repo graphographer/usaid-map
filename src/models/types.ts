@@ -1,0 +1,36 @@
+export type TDataEntry = {
+	Name: string;
+	Email: string;
+	Organization: string;
+	'Project/Program/Initiative Name': string;
+	'Project Link': string;
+	'Tool Link': string;
+	'Project/Program/Initiative Description': string;
+	Country: string[];
+	'Level of Education': string[];
+	Setting: string[];
+	'Common Skills': string;
+	Skills: string[];
+	'Currently Using an SEL/SS Measurement Tool': string;
+	'Tool Used or Adapted': string;
+	'Purpose of SEL/SS Measurement Tool': string;
+	'Identifying a Clear Process for Contextualization of Tools': string;
+	'Developing Local Capacity': string;
+	'Balancing Local and Regional Differences (e.g., in language, values, education levels, etc.) in SEL/SS Measurement': string;
+	'SEL/SS Measurement Tools that Match the Purpose': string;
+	'Developing and/or Validating Measures for High-Stakes Assessments': string;
+	'Identifying Valid and Reliable Tools for Local Context': string;
+	'Finding Tools to Establish Evidence of Impact': string;
+	'Navigating a Narrow Definition of Validity': string;
+	'Developing Tools that Assess Competencies and Environment': string;
+	'Limited Guidance on Assessing Environment to Aid in Interpretation': string;
+	'Achieving a System-wide Adoption and Community-based Advocacy': string;
+	'Getting Country and MOE to Prioritize SEL/SS': string;
+	'Limited Coordination Efforts to Address SEL/SS Measurement': string;
+	'Lack of a Concrete/Common Language': string;
+	'Finding Donors': string;
+	Other: string;
+	'Response to Member Check': string;
+};
+
+export type TDataEntries = TDataEntry[];

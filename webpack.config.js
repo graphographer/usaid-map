@@ -5,13 +5,17 @@ const ARRAY_COLUMNS = ['country', 'level of education', 'setting', 'skills'];
 
 module.exports = {
 	mode: 'development',
-	entry: './src/app/index.mts',
+	entry: './src/app/index.ts',
 	devtool: 'inline-source-map',
 	devServer: {
 		static: './dist'
 	},
 	module: {
 		rules: [
+			{
+				test: /\.css$/,
+				loader: 'css-loader'
+			},
 			{
 				test: /\.csv$/,
 				loader: 'csv-loader',
@@ -23,19 +27,18 @@ module.exports = {
 						return header.trim();
 					},
 					transform(data, header) {
+						// if (!header.trim() || !data.trim()) return undefined;
+
 						if (ARRAY_COLUMNS.includes(header.toLowerCase())) {
 							return data.split('\n').map(val => val.trim());
 						}
 
-						return data;
+						return data.trim();
 					}
 				}
 			},
-			{
-				test: /\.m?ts$/,
-				use: 'ts-loader',
-				exclude: /node_modules/
-			}
+			// all files with a `.ts`, `.cts`, `.mts` or `.tsx` extension will be handled by `ts-loader`
+			{ test: /\.([cm]?ts|tsx)$/, loader: 'ts-loader' }
 		]
 	},
 	plugins: [
@@ -44,7 +47,14 @@ module.exports = {
 		})
 	],
 	resolve: {
-		extensions: ['.mts', '.ts', '.js']
+		// Add `.ts` and `.tsx` as a resolvable extension.
+		extensions: ['.ts', '.tsx', '.js', '.css'],
+		// Add support for TypeScripts fully qualified ESM imports.
+		extensionAlias: {
+			'.js': ['.js', '.ts'],
+			'.cjs': ['.cjs', '.cts'],
+			'.mjs': ['.mjs', '.mts']
+		}
 	},
 	output: {
 		filename: '[name].js',
