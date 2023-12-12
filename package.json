@@ -1,0 +1,24 @@
+{
+	"name": "usg-map",
+	"version": "1.0.0",
+	"description": "The map highlights where the U.S. Government is working, program education levels for each country, and examples of the type of coordination that is currently happening across Agencies.",
+	"main": "index.js",
+	"private": "true",
+	"types": "custom.d.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "webpack",
+		"start": "webpack serve --open"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"csv-loader": "^3.0.5",
+		"html-webpack-plugin": "^5.5.4",
+		"ts-loader": "^9.5.1",
+		"typescript": "^5.3.3",
+		"webpack": "^5.89.0",
+		"webpack-cli": "^5.1.4",
+		"webpack-dev-server": "^4.15.1"
+	}
+}
