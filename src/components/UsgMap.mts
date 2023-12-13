@@ -115,6 +115,7 @@ export class UsgMap extends Provider {
 				previouslySelected = e.propagatedFrom;
 
 				e.propagatedFrom.setStyle(UsgMap.selectStyle);
+				e.propagatedFrom.bringToFront();
 
 				this.state.setSelectedCountry(e.propagatedFrom.feature.properties.name);
 			}
@@ -154,6 +155,6 @@ export class UsgMap extends Provider {
 	}
 
 	render() {
-		return html`${this.mapEl}`;
+		return this.mapEl;
 	}
 }
