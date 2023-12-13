@@ -1,11 +1,11 @@
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { computed } from 'mobx';
 import './CountryDropdown.mjs';
+import './EducationDropdown.mjs';
 import { Provider } from './Provider.mjs';
 import './SkillsDropdown.mjs';
 import './UsgMap.mjs';
-import './EducationDropdown.mjs';
-import { computed, makeObservable } from 'mobx';
 
 @customElement('usg-app')
 export class UsgApp extends Provider {

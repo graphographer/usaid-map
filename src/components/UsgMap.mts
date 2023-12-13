@@ -3,16 +3,14 @@ import {
 	DomUtil,
 	FeatureGroup,
 	Map,
-	control,
 	geoJSON,
 	map,
 	tileLayer
 } from 'leaflet';
-import { css, html, unsafeCSS } from 'lit';
+import { css, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { reaction } from 'mobx';
 import leafletCss from '../../node_modules/leaflet/dist/leaflet.css';
-import geodata from '../data/geodata.json';
 import { Provider } from './Provider.mjs';
 
 @customElement('usg-map')
@@ -70,7 +68,9 @@ export class UsgMap extends Provider {
 		weight: 1.5
 	};
 
-	protected firstUpdated() {
+	protected async firstUpdated() {
+		const geodata = await import('../data/geodata.json');
+
 		this.leafletMap = map(this.mapEl).setView([0, 0], 2);
 
 		tileLayer(

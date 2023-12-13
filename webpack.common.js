@@ -4,11 +4,22 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ARRAY_COLUMNS = ['country', 'level of education', 'setting', 'skills'];
 
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 	entry: './src/app/index.ts',
-	devtool: 'inline-source-map',
-	devServer: {
-		static: './dist'
+	plugins: [
+		new HtmlWebpackPlugin({
+			title: 'Production'
+		})
+	],
+	resolve: {
+		// Add `.ts` and `.tsx` as a resolvable extension.
+		extensions: ['.ts', '.tsx', '.js', '.css'],
+		// Add support for TypeScripts fully qualified ESM imports.
+		extensionAlias: {
+			'.js': ['.js', '.ts'],
+			'.cjs': ['.cjs', '.cts'],
+			'.mjs': ['.mjs', '.mts']
+		}
 	},
 	module: {
 		rules: [
@@ -41,26 +52,8 @@ module.exports = {
 			{ test: /\.([cm]?ts|tsx)$/, loader: 'ts-loader' }
 		]
 	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			title: 'Development'
-		})
-	],
-	resolve: {
-		// Add `.ts` and `.tsx` as a resolvable extension.
-		extensions: ['.ts', '.tsx', '.js', '.css'],
-		// Add support for TypeScripts fully qualified ESM imports.
-		extensionAlias: {
-			'.js': ['.js', '.ts'],
-			'.cjs': ['.cjs', '.cts'],
-			'.mjs': ['.mjs', '.mts']
-		}
-	},
 	output: {
 		filename: '[name].js',
 		path: path.resolve(__dirname, 'dist')
-	},
-	optimization: {
-		runtimeChunk: 'single'
 	}
 };

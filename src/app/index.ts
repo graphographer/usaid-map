@@ -1,8 +1,18 @@
-import usgData from '../data/usg_data.csv';
 import { State, stateProvider } from '../models/state';
 import '../components/UsgApp.mjs';
+import { TDataEntries } from '../models/types';
 
-const state = new State(usgData);
-stateProvider.set(state);
+async function start() {
+	const usgData = (await import('../data/usg_data.csv'))
+		.default as TDataEntries;
 
-document.body.innerHTML = '<usg-app></usg-app>';
+	const state = new State(usgData);
+	stateProvider.set(state);
+
+	// @ts-ignore
+	window.state = state;
+
+	document.body.innerHTML = '<usg-app></usg-app>';
+}
+
+start();
