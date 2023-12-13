@@ -1,9 +1,18 @@
-import { Map, map, tileLayer, geoJSON } from 'leaflet';
+import {
+	Map,
+	map,
+	tileLayer,
+	geoJSON,
+	Browser,
+	Layer,
+	FeatureGroup
+} from 'leaflet';
 import { css, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import leafletCss from '../../node_modules/leaflet/dist/leaflet.css';
 import { Provider } from './Provider.mjs';
 import geodata from '../data/geodata.json';
+import { reaction } from 'mobx';
 
 @customElement('usg-map')
 export class UsgMap extends Provider {
@@ -21,8 +30,38 @@ export class UsgMap extends Provider {
 			.leaflet-container {
 				height: 100%;
 			}
+			path.map-countries {
+				outline: none;
+			}
 		`
 	];
+
+	static solidStyle = {
+		color: '#fff',
+		fillOpacity: 1,
+		opacity: 0.5,
+		weight: 2,
+		className: 'map-countries'
+	};
+
+	static detailedBaseStyle = {
+		color: '#fff',
+		fillColor: 'gray',
+		fillOpacity: 1,
+		opacity: 0.5,
+		weight: 1,
+		className: 'map-countries'
+	};
+
+	static usaidRed = '#BA0C2F';
+	static usaidLightBlue = '#A7C6ED';
+
+	//style when selected
+	static selectStyle = {
+		color: UsgMap.usaidRed,
+		// className: 'select-test',
+		weight: 1.5
+	};
 
 	protected firstUpdated() {
 		this.leafletMap = map(this.mapEl).setView([0, 0], 2);
@@ -36,31 +75,63 @@ export class UsgMap extends Provider {
 			}
 		).addTo(this.leafletMap);
 
-		geoJSON(geodata as any, {
-			onEachFeature: this.onEachFeature.bind(this)
+		const geojson = geoJSON(geodata as any, {
+			onEachFeature: (feature, layer) => {
+				const { name: country } = feature.properties;
+
+				layer.bindTooltip(
+					`<strong>${country}</strong><br>Number of Reported Projects: ${
+						this.state.projectsByCountry.get(country)?.length
+					}`
+				);
+
+				// if (!Browser.ie && !Browser.opera && !Browser.edge) {
+				// 	layer.bringToFront();
+				// }
+			},
+			style: UsgMap.detailedBaseStyle,
+			filter: feature =>
+				this.state.allCountries.includes(feature.properties.name)
 		}).addTo(this.leafletMap);
+
+		let previouslySelected: FeatureGroup;
+		geojson.on({
+			mouseover(e) {
+				e.propagatedFrom.setStyle({ fillOpacity: 0.5 });
+			},
+			mouseout(e) {
+				geojson.setStyle({ fillOpacity: 1 });
+			},
+			click(e) {
+				console.log('CLICK', e);
+				previouslySelected?.setStyle(UsgMap.solidStyle);
+				previouslySelected = e.propagatedFrom;
+
+				e.propagatedFrom.setStyle(UsgMap.selectStyle);
+			}
+		});
+
+		this.disposers.push(
+			reaction(
+				() => this.state.filteredCountries,
+				filteredCountries => {
+					geojson.eachLayer(layer => {
+						geojson.resetStyle(layer);
+
+						// @ts-ignore
+						const country = layer.feature.properties.name;
+
+						if (filteredCountries.has(country)) {
+							// @ts-ignore
+							layer.setStyle({ fillColor: UsgMap.usaidLightBlue });
+						}
+					});
+				}
+			)
+		);
 	}
 
 	render() {
 		return html`${this.mapEl}`;
-	}
-
-	private resetHighlight(e) {
-		let layer = e.target;
-		layer.setStyle({ fillOpacity: 1 });
-	}
-
-	private highlightFeature(e) {
-		console.log(e);
-		let layer = e.target;
-
-		layer.setStyle({ fillOpacity: 0.5 });
-	}
-
-	private onEachFeature(feature, layer) {
-		layer.on({
-			mouseover: this.highlightFeature.bind(this),
-			mouseout: this.resetHighlight.bind(this)
-		});
 	}
 }
