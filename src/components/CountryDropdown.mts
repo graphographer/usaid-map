@@ -6,17 +6,18 @@ import { live } from 'lit/directives/live.js';
 @customElement('country-dropdown')
 export class CountryDropdown extends Provider {
 	render() {
-		return html`<select @change=${this.handleSelect}>
-			${[...this.state.countries].map(
+		return html`<select @change=${this.handleChange}>
+			<option disabed selected value>Select Country or Region</option>
+			${this.state.allCountries.map(
 				country =>
-					html`<option selected=${live(this.state.selectedCountry)}>
+					html`<option ?selected=${this.state.selectedCountry === country}>
 						${country}
 					</option>`
 			)}
 		</select>`;
 	}
 
-	private handleSelect(e: InputEvent & { target: { value: string } }) {
+	private handleChange(e: InputEvent & { target: { value: string } }) {
 		console.log('CHANGE', e.target.value);
 		this.state.setSelectedCountry(e.target.value);
 	}
