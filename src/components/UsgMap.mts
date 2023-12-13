@@ -1,18 +1,19 @@
 import {
+	Control,
+	DomUtil,
+	FeatureGroup,
 	Map,
-	map,
-	tileLayer,
+	control,
 	geoJSON,
-	Browser,
-	Layer,
-	FeatureGroup
+	map,
+	tileLayer
 } from 'leaflet';
 import { css, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import leafletCss from '../../node_modules/leaflet/dist/leaflet.css';
-import { Provider } from './Provider.mjs';
-import geodata from '../data/geodata.json';
 import { reaction } from 'mobx';
+import leafletCss from '../../node_modules/leaflet/dist/leaflet.css';
+import geodata from '../data/geodata.json';
+import { Provider } from './Provider.mjs';
 
 @customElement('usg-map')
 export class UsgMap extends Provider {
@@ -32,6 +33,12 @@ export class UsgMap extends Provider {
 			}
 			path.map-countries {
 				outline: none;
+			}
+			.legend2 i {
+				width: 18px;
+				height: 18px;
+				float: left;
+				margin: 0 8px 0 0;
 			}
 		`
 	];
@@ -110,6 +117,19 @@ export class UsgMap extends Provider {
 				e.propagatedFrom.setStyle(UsgMap.selectStyle);
 			}
 		});
+
+		const legend = new Control({ position: 'bottomleft' });
+
+		legend.onAdd = map => {
+			const legendDiv = DomUtil.create('div', 'legend2');
+
+			legendDiv.innerHTML +=
+				'<i style="background: #A7C6ED"></i><span>Highlighted country contains the agencies & education levels you selected.</span><br>';
+
+			return legendDiv;
+		};
+
+		legend.addTo(this.leafletMap);
 
 		this.disposers.push(
 			reaction(
