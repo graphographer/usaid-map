@@ -109,12 +109,14 @@ export class UsgMap extends Provider {
 			mouseout(e) {
 				geojson.setStyle({ fillOpacity: 1 });
 			},
-			click(e) {
+			click: e => {
 				console.log('CLICK', e);
 				previouslySelected?.setStyle(UsgMap.solidStyle);
 				previouslySelected = e.propagatedFrom;
 
 				e.propagatedFrom.setStyle(UsgMap.selectStyle);
+
+				this.state.setSelectedCountry(e.propagatedFrom.feature.properties.name);
 			}
 		});
 
