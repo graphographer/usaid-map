@@ -4,7 +4,7 @@ import { TDataEntries, TDataEntry } from './types';
 export class State {
 	data: TDataEntries;
 
-	selectedCountry: string = '';
+	selectedCountry: string = 'Brazil';
 	selectedEducationLevel: string = '';
 	selectedSkill: string = '';
 
@@ -16,8 +16,24 @@ export class State {
 		});
 	}
 
+	get selectedCountrySkills() {
+		if (!this.selectedCountry) return [];
+
+		return [
+			...this.projectsByCountry
+				.get(this.selectedCountry)
+				.reduce((acc, project) => {
+					project.Skills.forEach(skill => acc.add(skill));
+					return acc;
+				}, new Set())
+		];
+	}
+
 	get allCountries() {
 		return [...new Set(this.data.map(entry => entry.Country).flat())];
+	}
+	get allSkills() {
+		return [...new Set(this.data.map(entry => entry.Skills).flat())];
 	}
 
 	get filteredCountries() {
@@ -69,6 +85,24 @@ export class State {
 	get educationLevels() {
 		return [
 			...new Set(this.data.map(entry => entry['Level of Education']).flat())
+		];
+	}
+
+	get selectedCountryProjects() {
+		if (!this.selectedCountry) return [];
+
+		return this.projectsByCountry.get(this.selectedCountry);
+	}
+
+	get selectedCountryEducationLevels() {
+		if (!this.selectedCountry) return [];
+
+		return [
+			...new Set(
+				this.selectedCountryProjects
+					.map(project => project['Level of Education'])
+					.flat()
+			)
 		];
 	}
 
