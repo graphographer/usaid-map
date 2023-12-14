@@ -2,7 +2,8 @@ import {
 	Control,
 	DomUtil,
 	FeatureGroup,
-	Map,
+	Layer,
+	Map as LeafletMap,
 	geoJSON,
 	map,
 	tileLayer
@@ -15,8 +16,11 @@ import { Provider } from './Provider.mjs';
 
 @customElement('usg-map')
 export class UsgMap extends Provider {
-	private leafletMap: Map;
+	private leafletMap: LeafletMap;
 	private mapEl = document.createElement('div');
+
+	static usaidRed = '#ba0c2f';
+	static usaidLightBlue = '#a7c6ed';
 
 	static styles = [
 		unsafeCSS(leafletCss.toString()),
@@ -58,9 +62,6 @@ export class UsgMap extends Provider {
 		className: 'map-countries'
 	};
 
-	static usaidRed = '#BA0C2F';
-	static usaidLightBlue = '#A7C6ED';
-
 	//style when selected
 	static selectStyle = {
 		color: UsgMap.usaidRed,
@@ -91,15 +92,18 @@ export class UsgMap extends Provider {
 						this.state.projectsByCountry.get(country)?.length
 					}`
 				);
-
-				// if (!Browser.ie && !Browser.opera && !Browser.edge) {
-				// 	layer.bringToFront();
-				// }
 			},
 			style: UsgMap.detailedBaseStyle,
 			filter: feature =>
 				this.state.allCountries.includes(feature.properties.name)
 		}).addTo(this.leafletMap);
+
+		const featuresByCountry = new Map<string, any>(
+			geojson
+				.getLayers()
+				// @ts-ignore
+				.map(layer => [layer.feature.properties.name, layer])
+		);
 
 		let previouslySelected: FeatureGroup;
 		geojson.on({
@@ -110,7 +114,7 @@ export class UsgMap extends Provider {
 				geojson.setStyle({ fillOpacity: 1 });
 			},
 			click: e => {
-				console.log('CLICK', e);
+				console.log('CLICK', e.propagatedFrom);
 				previouslySelected?.setStyle(UsgMap.solidStyle);
 				previouslySelected = e.propagatedFrom;
 
@@ -126,8 +130,7 @@ export class UsgMap extends Provider {
 		legend.onAdd = map => {
 			const legendDiv = DomUtil.create('div', 'legend2');
 
-			legendDiv.innerHTML +=
-				'<i style="background: #A7C6ED"></i><span>Highlighted country contains the agencies & education levels you selected.</span><br>';
+			legendDiv.innerHTML += `<i style="background:${UsgMap.usaidLightBlue}"></i><span>Highlighted country contains the agencies & education levels you selected.</span><br>`;
 
 			return legendDiv;
 		};
@@ -148,10 +151,30 @@ export class UsgMap extends Provider {
 							// @ts-ignore
 							layer.setStyle({ fillColor: UsgMap.usaidLightBlue });
 						}
+
+						if (this.state.selectedCountry) {
+							const feature = featuresByCountry.get(this.state.selectedCountry);
+							this.outlineFeature(feature);
+						}
 					});
+				}
+			),
+			reaction(
+				() => this.state.selectedCountry,
+				selectedCountry => {
+					previouslySelected?.setStyle(UsgMap.solidStyle);
+					const feature = featuresByCountry.get(selectedCountry);
+					previouslySelected = feature;
+					this.outlineFeature(feature);
 				}
 			)
 		);
+	}
+
+	private outlineFeature(feature) {
+		if (!feature) return;
+		feature.setStyle(UsgMap.selectStyle);
+		feature.bringToFront();
 	}
 
 	render() {
