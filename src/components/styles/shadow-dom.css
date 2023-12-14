@@ -1,0 +1,33 @@
+:host {
+    --primary: #002f6c;
+    --primary-hover: red;
+    --border-width: 2px;
+}
+
+details > summary + * {
+    background-color: #f4f4f4;
+    padding: var(--spacing);
+    border-radius: var(--border-radius);
+}
+
+details[open]>summary {
+    margin-bottom: 0;
+}
+
+.checkmark {
+    width: 3rem;
+    content: url("../../images/usaid_checkmark.png")
+}
+
+.checklist {
+    table-layout: fixed;
+}
+
+.checklist td, .checklist th {
+    border: var(--border-width) solid var(--table-border-color) ;
+    text-align: center;
+}
+
+.checklist td {
+    height: 72px;
+}

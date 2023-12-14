@@ -2,7 +2,6 @@ import {
 	Control,
 	DomUtil,
 	FeatureGroup,
-	Layer,
 	Map as LeafletMap,
 	geoJSON,
 	map,
@@ -29,6 +28,7 @@ export class UsgMap extends Provider {
 				display: block;
 				height: 500px;
 				width: auto;
+				margin-bottom: 20px;
 			}
 			.leaflet-container {
 				height: 100%;
