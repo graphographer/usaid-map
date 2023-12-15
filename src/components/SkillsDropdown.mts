@@ -9,7 +9,7 @@ export class SkillsDropdown extends Provider {
 		return html`
 			<select @change=${this.handleChange}>
 				<option disabed selected value>Select Targeted Skill</option>
-				${this.state.skillsMeasured.map(
+				${this.state.allSkills.map(
 					skill =>
 						html`<option ?selected=${this.state.selectedSkill === skill}>
 							${skill}

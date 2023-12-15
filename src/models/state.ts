@@ -31,10 +31,10 @@ export class State {
 	}
 
 	get allCountries() {
-		return [...new Set(this.data.map(entry => entry.Country).flat())];
+		return [...new Set(this.data.map(entry => entry.Country).flat())].sort();
 	}
 	get allSkills() {
-		return [...new Set(this.data.map(entry => entry.Skills).flat())];
+		return [...new Set(this.data.map(entry => entry.Skills).flat())].sort();
 	}
 
 	get filteredCountries() {
@@ -105,10 +105,6 @@ export class State {
 					.flat()
 			)
 		];
-	}
-
-	get skillsMeasured() {
-		return [...new Set(this.data.map(entry => entry.Skills).flat())];
 	}
 
 	get challengeAreas() {
