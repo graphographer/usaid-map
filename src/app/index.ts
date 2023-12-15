@@ -1,7 +1,7 @@
 import { State, stateProvider } from '../models/state';
 import '../components/UsgApp.mjs';
 import { TDataEntries } from '../models/types';
-import 'style-loader!@picocss/pico/css/pico.css';
+import 'style-loader!@picocss/pico/css/pico.min.css';
 import 'style-loader!../components/styles/light-dom.css';
 
 async function start() {

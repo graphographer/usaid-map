@@ -1,6 +1,6 @@
-import picoCss from '@picocss/pico/css/pico.css';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { css, unsafeCSS } from 'lit';
+import picoCss from '@picocss/pico/css/pico.min.css';
+import { unsafeCSS } from 'lit';
 import { stateProvider } from '../models/state';
 import shadowDomCss from './styles/shadow-dom.css';
 

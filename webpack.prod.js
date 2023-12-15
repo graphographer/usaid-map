@@ -1,5 +1,7 @@
 const { mergeWithRules } = require('webpack-merge');
 const common = require('./webpack.common.js');
+const purgeCss = require('@fullhuman/postcss-purgecss');
+const BundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const ARRAY_COLUMNS = ['country', 'level of education', 'setting', 'skills'];
 
@@ -9,10 +11,12 @@ const merged = mergeWithRules({
 	}
 })(common, {
 	mode: 'production',
+	plugins: [new BundleAnalyzer()],
 	module: {
 		rules: [
 			{
 				test: /\.css$/,
+				exclude: /leaflet\.css/,
 				use: [
 					{ loader: 'css-loader', options: { sourceMap: true } },
 					{
@@ -24,14 +28,31 @@ const merged = mergeWithRules({
 									[
 										'cssnano',
 										{
-											preset: [
-												'default',
-												{
-													discardComments: {
-														removeAll: true
-													}
-												}
-											]
+											preset: ['advanced']
+										}
+									],
+									require('postcss-import'),
+									require('autoprefixer')
+								]
+							}
+						}
+					}
+				]
+			},
+			{
+				test: /leaflet\.css/,
+				use: [
+					{ loader: 'css-loader', options: { sourceMap: true } },
+					{
+						loader: 'postcss-loader',
+						options: {
+							sourceMap: true,
+							postcssOptions: {
+								plugins: [
+									[
+										'cssnano',
+										{
+											preset: ['advanced']
 										}
 									],
 									require('postcss-import'),
@@ -76,10 +97,7 @@ const merged = mergeWithRules({
 									{
 										modules: {
 											'lit-html': ['html'],
-											'lit-element': [
-												'html',
-												{ name: 'css', encapsulation: 'style' }
-											]
+											lit: ['html', { name: 'css', encapsulation: 'style' }]
 										},
 										strictCSS: true,
 										htmlMinifier: {
@@ -102,7 +120,5 @@ const merged = mergeWithRules({
 		]
 	}
 });
-
-console.log('MERGED', merged);
 
 module.exports = merged;

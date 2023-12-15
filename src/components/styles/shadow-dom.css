@@ -10,7 +10,7 @@ details > summary + * {
     border-radius: var(--border-radius);
 }
 
-details[open]>summary {
+details[open] > summary {
     margin-bottom: 0;
 }
 
@@ -24,7 +24,7 @@ details[open]>summary {
 }
 
 .checklist td, .checklist th {
-    border: var(--border-width) solid var(--table-border-color) ;
+    border: var(--border-width) solid var(--table-border-color);
     text-align: center;
 }
 

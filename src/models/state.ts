@@ -1,5 +1,6 @@
 import { makeAutoObservable, observable } from 'mobx';
 import { TDataEntries, TDataEntry } from './types';
+import { intersection } from 'lodash';
 
 export class State {
 	data: TDataEntries;
