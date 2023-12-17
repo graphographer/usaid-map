@@ -24,6 +24,8 @@ CSS variables related to pico are, for example, to be placed in the shadow dom s
 
 There is currently no SASS or SCSS compiler.
 
+As all styles are injected via js, will not update until the app is re-built.
+
 ## App State
 
 App state is defined in `./src/models/state.ts`. Uses mobx. Web components use Lit and Lit-Mobx, which means that everything re-renders when observable state changes. App state is provided to components extended from `Provider` via the `state` property. In reality, app state is injected into `Provider` by means of a Mobx observable box: this is a best practice which, for example, allows for mock data to be used for testing purposes. Examine `./src/app/index.ts` to see this in action.
