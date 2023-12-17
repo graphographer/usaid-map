@@ -98,6 +98,11 @@ export class UsgMap extends Provider {
 				this.state.allCountries.includes(feature.properties.name)
 		}).addTo(this.leafletMap);
 
+		// disable tabbing through every single country
+		this.shadowRoot.querySelectorAll('path.map-countries').forEach(el => {
+			el.setAttribute('tabindex', '-1');
+		});
+
 		const featuresByCountry = new Map<string, any>(
 			geojson
 				.getLayers()

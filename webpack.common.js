@@ -8,7 +8,8 @@ module.exports = {
 	entry: './src/app/index.ts',
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'Production'
+			title: 'Production',
+			template: 'src/template.html'
 		})
 	],
 	resolve: {

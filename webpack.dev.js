@@ -13,7 +13,8 @@ module.exports = mergeWithRules({
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'Development'
+			title: 'Development',
+			template: 'src/index.html'
 		}),
 		new BundleAnalyzer()
 	],
