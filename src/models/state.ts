@@ -1,7 +1,7 @@
 import { makeAutoObservable, observable } from 'mobx';
 import { TDataEntries, TDataEntry } from './types';
-import { CHALLENGE_AREAS } from './challenge_areas';
-import { entries } from 'lodash';
+import { CHALLENGE_AREAS, PRECISE_CHALLENGE_AREAS } from './challenge_areas';
+import { Dictionary, entries, groupBy, pickBy } from 'lodash';
 
 export class State {
 	data: TDataEntries;
@@ -63,6 +63,34 @@ export class State {
 		}
 
 		return entriesByChallengeArea;
+	}
+
+	get challengesByProject(): Map<TDataEntry, Record<string, string[][]>> {
+		return new Map(
+			this.data.map(project => {
+				const preciseChallenges = pickBy(project, (val, key) =>
+					PRECISE_CHALLENGE_AREAS.map(challenge =>
+						challenge.toLowerCase()
+					).includes(key.toLowerCase())
+				);
+
+				const groupedChallenges = groupBy(
+					Object.entries(preciseChallenges),
+					([preciseChallenge, response]) => {
+						const broad = Object.entries(CHALLENGE_AREAS).find(
+							([broad, precise]) =>
+								precise
+									.map(challenge => challenge.toLowerCase())
+									.includes(preciseChallenge.toLowerCase())
+						);
+
+						return broad?.[0];
+					}
+				) as Record<string, string[][]>;
+
+				return [project, groupedChallenges];
+			})
+		);
 	}
 
 	get filteredCountries(): Set<string> {
