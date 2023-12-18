@@ -13,8 +13,8 @@ import { reaction } from 'mobx';
 import leafletCss from '../../node_modules/leaflet/dist/leaflet.css';
 import { Provider } from './Provider.mjs';
 
-@customElement('usg-map')
-export class UsgMap extends Provider {
+@customElement('sel-map')
+export class SelMap extends Provider {
 	private leafletMap: LeafletMap;
 	private mapEl = document.createElement('div');
 
@@ -64,7 +64,7 @@ export class UsgMap extends Provider {
 
 	//style when selected
 	static selectStyle = {
-		color: UsgMap.usaidRed,
+		color: SelMap.usaidRed,
 		// className: 'select-test',
 		weight: 1.5
 	};
@@ -93,7 +93,7 @@ export class UsgMap extends Provider {
 					}`
 				);
 			},
-			style: UsgMap.detailedBaseStyle,
+			style: SelMap.detailedBaseStyle,
 			filter: feature =>
 				this.state.allCountries.includes(feature.properties.name)
 		}).addTo(this.leafletMap);
@@ -119,10 +119,10 @@ export class UsgMap extends Provider {
 				geojson.setStyle({ fillOpacity: 1 });
 			},
 			click: e => {
-				previouslySelected?.setStyle(UsgMap.solidStyle);
+				previouslySelected?.setStyle(SelMap.solidStyle);
 				previouslySelected = e.propagatedFrom;
 
-				e.propagatedFrom.setStyle(UsgMap.selectStyle);
+				e.propagatedFrom.setStyle(SelMap.selectStyle);
 				e.propagatedFrom.bringToFront();
 
 				this.state.setSelectedCountry(e.propagatedFrom.feature.properties.name);
@@ -134,7 +134,7 @@ export class UsgMap extends Provider {
 		legend.onAdd = map => {
 			const legendDiv = DomUtil.create('div', 'legend2');
 
-			legendDiv.innerHTML += `<i style="background:${UsgMap.usaidLightBlue}"></i><span>Highlighted country contains the metrics you selected below.</span><br>`;
+			legendDiv.innerHTML += `<i style="background:${SelMap.usaidLightBlue}"></i><span>Highlighted country contains the metrics you selected below.</span><br>`;
 
 			return legendDiv;
 		};
@@ -153,7 +153,7 @@ export class UsgMap extends Provider {
 
 						if (filteredCountries.has(country)) {
 							// @ts-ignore
-							layer.setStyle({ fillColor: UsgMap.usaidLightBlue });
+							layer.setStyle({ fillColor: SelMap.usaidLightBlue });
 						}
 
 						if (this.state.selectedCountry) {
@@ -166,7 +166,7 @@ export class UsgMap extends Provider {
 			reaction(
 				() => this.state.selectedCountry,
 				selectedCountry => {
-					previouslySelected?.setStyle(UsgMap.solidStyle);
+					previouslySelected?.setStyle(SelMap.solidStyle);
 					const feature = featuresByCountry.get(selectedCountry);
 					previouslySelected = feature;
 					this.outlineFeature(feature);
@@ -177,7 +177,7 @@ export class UsgMap extends Provider {
 
 	private outlineFeature(feature) {
 		if (!feature) return;
-		feature.setStyle(UsgMap.selectStyle);
+		feature.setStyle(SelMap.selectStyle);
 		feature.bringToFront();
 	}
 
