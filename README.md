@@ -16,7 +16,7 @@ Outputs to `./dist`.
 
 ## Styling
 
-Uses (picocss)[https://picocss.com/]. The complete stylesheet is injected both into the light dom as well as into the shadow doms of web components extended from `Provider`.
+Uses [picocss](https://picocss.com/). The complete stylesheet is injected both into the light dom as well as into the shadow doms of web components extended from `Provider`.
 
 To add additional styling, do so in the relevant components by extending the static `styles` property. Be sure to include `Provider` styles via `Provider.styles` (or `super.styles`, see https://lit.dev/docs/components/styles/#inheriting-styles-from-a-superclass). To add a "global" style to the shadow dom, do so in `./src/components/styles/shadow-dom.css`. Similarly, add light dom global styles to `./src/components/styles/light-dom.css`.
 
