@@ -9,7 +9,7 @@ export type TDataEntry = {
 	Country: string[];
 	'Level of Education': string[];
 	Setting: string[];
-	'Common Skills': string;
+	'Common Skills': string[];
 	Skills: string[];
 	'Currently Using an SEL/SS Measurement Tool': string;
 	'Tool Used or Adapted': string;

@@ -1,7 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const ARRAY_COLUMNS = ['country', 'level of education', 'setting', 'skills'];
+const ARRAY_COLUMNS = [
+	'country',
+	'level of education',
+	'setting',
+	'skills',
+	'common skills'
+];
 
 module.exports = {
 	mode: 'production',
