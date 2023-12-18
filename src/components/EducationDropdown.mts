@@ -1,14 +1,14 @@
+import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { Provider } from './Provider.mjs';
-import { html } from 'lit';
-import { live } from 'lit/directives/live.js';
 
 @customElement('education-dropdown')
 export class EducationDropdown extends Provider {
 	render() {
-		return html`
-			<select @change=${this.handleChange}>
-				<option disabed selected value>Select Targeted Education Level</option>
+		return html` <label for="education-level">
+			Education Level
+			<select id="education-level" @change=${this.handleChange}>
+				<option disabed selected value>None Selected</option>
 				${this.state.educationLevels.map(
 					educationLevel =>
 						html`<option
@@ -18,7 +18,7 @@ export class EducationDropdown extends Provider {
 						</option>`
 				)}
 			</select>
-		`;
+		</label>`;
 	}
 
 	private handleChange(e: InputEvent & { target: { value: string } }) {

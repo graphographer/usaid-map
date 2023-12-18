@@ -1,24 +1,25 @@
 import { html } from 'lit-html';
-import { Provider } from './Provider.mjs';
 import { customElement } from 'lit/decorators.js';
-import { live } from 'lit/directives/live.js';
+import { Provider } from './Provider.mjs';
 
 @customElement('country-dropdown')
 export class CountryDropdown extends Provider {
 	render() {
-		return html`<select @change=${this.handleChange}>
-			<option disabed selected value>Select Country or Region</option>
-			${this.state.allCountries.map(
-				country =>
-					html`<option ?selected=${this.state.selectedCountry === country}>
-						${country}
-					</option>`
-			)}
-		</select>`;
+		return html` <label for="countries">
+			Select a country
+			<select id="countries" @change=${this.handleChange}>
+				<option disabed selected value>None Selected</option>
+				${this.state.allCountries.map(
+					country =>
+						html`<option ?selected=${this.state.selectedCountry === country}>
+							${country}
+						</option>`
+				)}
+			</select>
+		</label>`;
 	}
 
 	private handleChange(e: InputEvent & { target: { value: string } }) {
-		console.log('CHANGE', e.target.value);
 		this.state.setSelectedCountry(e.target.value);
 	}
 }
