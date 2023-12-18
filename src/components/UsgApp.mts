@@ -5,6 +5,7 @@ import './CountryDropdown.mjs';
 import './EducationDropdown.mjs';
 import { Provider } from './Provider.mjs';
 import './SkillsDropdown.mjs';
+import './ChallengesDropdown.mjs';
 import './UsgMap.mjs';
 import { programInfo } from './templates/programInfo';
 import { horizontalChecklist } from './templates/horizontalChecklist';
@@ -18,6 +19,7 @@ export class UsgApp extends Provider {
 			<usg-map></usg-map>
 
 			<div class="grid">
+				<challenges-dropdown></challenges-dropdown>
 				<education-dropdown></education-dropdown>
 				<skills-dropdown></skills-dropdown>
 			</div>

@@ -1,11 +1,13 @@
 import { makeAutoObservable, observable } from 'mobx';
 import { TDataEntries, TDataEntry } from './types';
-import { intersection } from 'lodash';
+import { CHALLENGE_AREAS } from './challenge_areas';
+import { entries } from 'lodash';
 
 export class State {
 	data: TDataEntries;
 
 	selectedCountry: string = 'Brazil';
+	selectedChallengeArea: string = '';
 	selectedEducationLevel: string = '';
 	selectedSkill: string = '';
 
@@ -37,36 +39,60 @@ export class State {
 		return [...new Set(this.data.map(entry => entry.Skills).flat())].sort();
 	}
 
-	get filteredCountries() {
-		const { selectedEducationLevel, selectedSkill } = this;
+	get entriesByChallengeArea(): Map<string, TDataEntry[]> {
+		const entriesByChallengeArea = new Map();
 
-		if (!selectedEducationLevel && !selectedSkill) {
+		for (const challenge in CHALLENGE_AREAS) {
+			const preciseChallenges = CHALLENGE_AREAS[challenge].map(
+				(challenge: string) => challenge.toLowerCase()
+			);
+
+			const entriesWithSelectedChallenges = this.data.filter(entry => {
+				const entryChallenges = Object.entries(entry).filter(([key, val]) => {
+					return (
+						preciseChallenges.includes(key.toLowerCase()) &&
+						!!val &&
+						val !== '[NO RESPONSE]'
+					);
+				});
+
+				return !!entryChallenges.length;
+			});
+
+			entriesByChallengeArea.set(challenge, entriesWithSelectedChallenges);
+		}
+
+		return entriesByChallengeArea;
+	}
+
+	get filteredCountries(): Set<string> {
+		const { selectedEducationLevel, selectedSkill, selectedChallengeArea } =
+			this;
+
+		if (!selectedEducationLevel && !selectedSkill && !selectedChallengeArea) {
 			return new Set();
 		}
 
-		const filteredCountries = new Set(
-			this.data
-				.filter(entry => {
-					const { 'Level of Education': educationLevels, Skills: skills } =
-						entry;
+		let filteredEntries: TDataEntry[] = [...this.data];
+		if (selectedEducationLevel) {
+			filteredEntries = filteredEntries.filter(entry => {
+				return entry['Level of Education'].includes(selectedEducationLevel);
+			});
+		}
+		if (selectedSkill) {
+			filteredEntries = filteredEntries.filter(entry => {
+				return entry.Skills.includes(selectedSkill);
+			});
+		}
+		if (selectedChallengeArea) {
+			filteredEntries = filteredEntries.filter(entry => {
+				return this.entriesByChallengeArea
+					.get(selectedChallengeArea)
+					.includes(entry);
+			});
+		}
 
-					if (selectedEducationLevel && selectedSkill) {
-						return (
-							educationLevels.includes(selectedEducationLevel) &&
-							skills.includes(selectedSkill)
-						);
-					}
-
-					return (
-						educationLevels.includes(selectedEducationLevel) ||
-						skills.includes(selectedSkill)
-					);
-				})
-				.map(entry => entry.Country)
-				.flat()
-		);
-
-		return filteredCountries;
+		return new Set(filteredEntries.map(entry => entry.Country).flat());
 	}
 
 	get projectsByCountry() {
@@ -108,11 +134,20 @@ export class State {
 	}
 
 	get challengeAreas() {
-		return [...new Set(this.data.map(entry => entry))];
+		return [
+			'Local Engagement of Stakeholders',
+			'Identifying Purpose of Measurement and Linking to Assessment',
+			'General Issues Related to Measurement',
+			'Socialization and Buy-In Around SEL/SS Measurement',
+			'Other'
+		];
 	}
 
 	setSelectedCountry(country: string) {
 		this.selectedCountry = country;
+	}
+	setChallengeArea(challenge: string) {
+		this.selectedChallengeArea = challenge;
 	}
 	setEducationLevel(level: string) {
 		this.selectedEducationLevel = level;
