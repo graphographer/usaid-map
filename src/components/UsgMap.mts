@@ -119,7 +119,6 @@ export class UsgMap extends Provider {
 				geojson.setStyle({ fillOpacity: 1 });
 			},
 			click: e => {
-				console.log('CLICK', e.propagatedFrom);
 				previouslySelected?.setStyle(UsgMap.solidStyle);
 				previouslySelected = e.propagatedFrom;
 
@@ -135,7 +134,7 @@ export class UsgMap extends Provider {
 		legend.onAdd = map => {
 			const legendDiv = DomUtil.create('div', 'legend2');
 
-			legendDiv.innerHTML += `<i style="background:${UsgMap.usaidLightBlue}"></i><span>Highlighted country contains the agencies & education levels you selected.</span><br>`;
+			legendDiv.innerHTML += `<i style="background:${UsgMap.usaidLightBlue}"></i><span>Highlighted country contains the metrics you selected below.</span><br>`;
 
 			return legendDiv;
 		};
