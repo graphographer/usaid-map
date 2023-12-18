@@ -48,7 +48,7 @@ module.exports = {
 						// if (!header.trim() || !data.trim()) return undefined;
 
 						if (ARRAY_COLUMNS.includes(header.toLowerCase())) {
-							return data.split('\n').map(val => val.trim());
+							return [...new Set(data.split('\n').map(val => val.trim()))];
 						}
 
 						return data.trim();
