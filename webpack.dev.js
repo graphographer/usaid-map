@@ -9,7 +9,8 @@ module.exports = mergeWithRules({
 	mode: 'development',
 	devtool: 'inline-source-map',
 	devServer: {
-		static: './dist'
+		static: './dist',
+		compress: true
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
