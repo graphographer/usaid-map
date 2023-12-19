@@ -42,6 +42,9 @@ export class SelMap extends Provider {
 				float: left;
 				margin: 0 8px 0 0;
 			}
+			.leaflet-attribution-flag {
+				display: none !important;
+			}
 		`
 	];
 
@@ -71,6 +74,14 @@ export class SelMap extends Provider {
 
 	protected async firstUpdated() {
 		const geodata = await import('../data/geodata.json');
+
+		const geoCountries = geodata.features.map(
+			feature => feature.properties.name
+		);
+		console.log(
+			'Missing or mismatched Geofeatures',
+			this.state.allCountries.filter(country => !geoCountries.includes(country))
+		);
 
 		this.leafletMap = map(this.mapEl).setView([0, 0], 2);
 
@@ -110,7 +121,10 @@ export class SelMap extends Provider {
 				.map(layer => [layer.feature.properties.name, layer])
 		);
 
-		let previouslySelected: FeatureGroup;
+		let previouslySelected: FeatureGroup = featuresByCountry.get(
+			this.state.selectedCountry
+		);
+		this.updateSelectedStyle(previouslySelected, previouslySelected);
 		geojson.on({
 			mouseover(e) {
 				e.propagatedFrom.setStyle({ fillOpacity: 0.5 });
@@ -119,11 +133,8 @@ export class SelMap extends Provider {
 				geojson.setStyle({ fillOpacity: 1 });
 			},
 			click: e => {
-				previouslySelected?.setStyle(SelMap.solidStyle);
+				this.updateSelectedStyle(previouslySelected, e.propagatedFrom);
 				previouslySelected = e.propagatedFrom;
-
-				e.propagatedFrom.setStyle(SelMap.selectStyle);
-				e.propagatedFrom.bringToFront();
 
 				this.state.setSelectedCountry(e.propagatedFrom.feature.properties.name);
 			}
@@ -158,7 +169,7 @@ export class SelMap extends Provider {
 
 						if (this.state.selectedCountry) {
 							const feature = featuresByCountry.get(this.state.selectedCountry);
-							this.outlineFeature(feature);
+							this.updateSelectedStyle(previouslySelected, feature);
 						}
 					});
 				}
@@ -168,17 +179,23 @@ export class SelMap extends Provider {
 				selectedCountry => {
 					previouslySelected?.setStyle(SelMap.solidStyle);
 					const feature = featuresByCountry.get(selectedCountry);
+					this.updateSelectedStyle(previouslySelected, feature);
 					previouslySelected = feature;
-					this.outlineFeature(feature);
 				}
 			)
 		);
 	}
 
-	private outlineFeature(feature) {
-		if (!feature) return;
-		feature.setStyle(SelMap.selectStyle);
-		feature.bringToFront();
+	private updateSelectedStyle(
+		previouslySelected: undefined | FeatureGroup,
+		currentlySelected: undefined | FeatureGroup
+	) {
+		previouslySelected?.setStyle(SelMap.solidStyle);
+
+		if (!currentlySelected) return;
+
+		currentlySelected.setStyle(SelMap.selectStyle);
+		currentlySelected.bringToFront();
 	}
 
 	render() {

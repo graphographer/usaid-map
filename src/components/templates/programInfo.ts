@@ -27,11 +27,11 @@ export const programInfo = (
 			<b>SEL/SS Skills Measure Information</b>
 			<ul>
 				<li>
-					<b>Common Skills measured:</b> ${project['Common Skills'].join(', ')}
+					<b>Common Skills measured:</b> ${project['Common Skills']?.join(', ')}
 				</li>
 				<li>
 					<b>Skills measured (as reported by contributor):</b>
-					${project.Skills.join(', ')}
+					${project.Skills?.join(', ')}
 				</li>
 				<li><b>Tool Used or Adapted:</b> ${project['Tool Used or Adapted']}</li>
 				<li>
