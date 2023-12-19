@@ -31,3 +31,8 @@ details[open] > summary {
 .checklist td {
     height: 72px;
 }
+
+select {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
