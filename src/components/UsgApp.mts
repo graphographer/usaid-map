@@ -22,6 +22,11 @@ export class UsgApp extends Provider {
 			ul.overview > li {
 				margin-bottom: var(--typography-spacing-vertical);
 			}
+
+			section#projects summary {
+				position: sticky;
+				top: 0;
+			}
 		`
 	];
 
@@ -44,16 +49,16 @@ export class UsgApp extends Provider {
 			${this.state.selectedCountry
 				? html`
 						<section>
-							<h3>Education Level(s) Targeted by Projects</h3>
+							<h4>Education Level(s) Targeted by Projects</h4>
 							${horizontalChecklist(this.educationLevelsList)}
 						</section>
 						<section>
-							<h3>Skills Targeted by Activities for this Country</h3>
+							<h4>Skills Targeted by Activities for this Country</h4>
 							${horizontalChecklist(this.skillsList)}
 						</section>
 
 						<section id="projects">
-							<h3>Country Projects</h3>
+							<h4>Country Projects</h4>
 							${[
 								...this.state.projectsByCountry.get(this.state.selectedCountry)
 							].map(project => {
