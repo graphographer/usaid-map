@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { computed } from 'mobx';
+import { autorun, computed } from 'mobx';
 import './CountryDropdown.mjs';
 import './EducationDropdown.mjs';
 import { Provider } from './Provider.mjs';
@@ -75,6 +75,22 @@ export class UsgApp extends Provider {
 
 			<pre><code>${this.prettyJson}</code></pre>
 		</main>`;
+	}
+
+	firstUpdated() {
+		this.disposers.push(
+			autorun(() => {
+				this.state.selectedCountry;
+				this.closeDetails();
+			})
+		);
+	}
+
+	private async closeDetails() {
+		await this.updateComplete;
+		this.shadowRoot
+			.querySelectorAll('details')
+			.forEach(detail => detail.removeAttribute('open'));
 	}
 
 	@computed
