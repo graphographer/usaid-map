@@ -44,10 +44,9 @@ export const programInfo = (
 		</li>
 
 		<li>
-			<b
-				>Action steps project is taking to address SEL/SS measurement
-				challenges</b
-			>
+			<b>
+				Action steps project is taking to address SEL/SS measurement challenges
+			</b>
 			<table class="challenges">
 				<thead>
 					<tr>
