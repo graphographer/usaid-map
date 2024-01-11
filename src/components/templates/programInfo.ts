@@ -61,7 +61,7 @@ export const programInfo = (
 								<th scope="row">${broad}</th>
 								<td>
 									${precises.map(([area, comment]) => {
-										return html`<p><b>${area}:</b> ${comment}</p>`;
+										return html`<p><b>${area}</b><br />${comment}</p>`;
 									})}
 								</td>
 							</tr>
