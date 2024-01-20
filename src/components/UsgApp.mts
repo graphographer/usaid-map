@@ -24,6 +24,7 @@ export class UsgApp extends Provider {
 		css`
 			:host {
 				display: block;
+				margin-top: var(--spacing);
 			}
 		`
 	];

@@ -8,7 +8,7 @@ import { ASSESSMENT_TYPES } from './assessment_types';
 export class State {
 	data: TDataEntries;
 
-	selectedCountry: string = 'Tanzania';
+	selectedCountry: string = '';
 	selectedChallengeArea: string = '';
 	selectedEducationLevel: string = '';
 	selectedSkill: string = '';
