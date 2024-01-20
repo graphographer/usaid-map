@@ -1,14 +1,7 @@
 const { mergeWithRules } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const BundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
-const ARRAY_COLUMNS = [
-	'country',
-	'level of education',
-	'setting',
-	'skills',
-	'common skills'
-];
+const { csvRule } = require('./webpack.rules.js');
 
 const merged = mergeWithRules({
 	module: {
@@ -35,7 +28,7 @@ const merged = mergeWithRules({
 									[
 										'cssnano',
 										{
-											preset: ['advanced']
+											preset: 'default'
 										}
 									],
 									require('postcss-import'),
@@ -46,27 +39,7 @@ const merged = mergeWithRules({
 					}
 				]
 			},
-			{
-				test: /\.csv$/,
-				loader: 'csv-loader',
-				options: {
-					header: true,
-					skipFirstNLines: 3,
-					skipEmptyLines: 'greedy',
-					transformHeader(header) {
-						return header.trim();
-					},
-					transform(data, header) {
-						// if (!header.trim() || !data.trim()) return undefined;
-
-						if (ARRAY_COLUMNS.includes(header.toLowerCase())) {
-							return data.split('\n').map(val => val.trim());
-						}
-
-						return data.trim();
-					}
-				}
-			},
+			csvRule,
 			// all files with a `.ts`, `.cts`, `.mts` or `.tsx` extension will be handled by `ts-loader`
 			{
 				test: /\.([cm]?ts|tsx)$/,
