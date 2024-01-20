@@ -5,6 +5,7 @@ export type TDataEntry = {
 	'Project/Program/Initiative Name': string;
 	'Project Link': string;
 	'Tool Link': string;
+	'URL Tool Used or Adapted': string;
 	'Project/Program/Initiative Description': string;
 	Country: string[];
 	'Level of Education': string[];

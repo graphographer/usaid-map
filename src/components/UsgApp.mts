@@ -1,6 +1,13 @@
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { autorun, computed } from 'mobx';
+import {
+	action,
+	autorun,
+	computed,
+	makeObservable,
+	observable,
+	runInAction
+} from 'mobx';
 import './CountryDropdown.mjs';
 import './EducationDropdown.mjs';
 import { Provider } from './Provider.mjs';
@@ -15,20 +22,16 @@ export class UsgApp extends Provider {
 	static styles = [
 		...super.styles,
 		css`
-			#projects ul li {
-				list-style-type: none;
-			}
-
-			ul.overview > li {
-				margin-bottom: var(--typography-spacing-vertical);
-			}
-
-			section#projects summary {
-				position: sticky;
-				top: 0;
+			:host {
+				display: block;
 			}
 		`
 	];
+
+	constructor() {
+		super();
+		makeObservable(this, { containerWidth: observable });
+	}
 
 	render() {
 		return html` <main class="container">
@@ -44,41 +47,56 @@ export class UsgApp extends Provider {
 				</div>
 			</section>
 
-			<h2>${this.state.selectedCountry}</h2>
+			<div class="current-country">${this.state.selectedCountry}</div>
 
 			${this.state.selectedCountry
 				? html`
 						<section>
-							<h4>Education Level(s) Targeted by Projects</h4>
-							${horizontalChecklist(this.educationLevelsList)}
+							<h2>Education Level(s) Targeted by Projects</h2>
+							${horizontalChecklist(this.educationLevelsList, this.cellsPerRow)}
 						</section>
 						<section>
-							<h4>Skills Targeted by Activities for this Country</h4>
-							${horizontalChecklist(this.skillsList)}
+							<h2>Skills Targeted by Activities for this Country</h2>
+							${horizontalChecklist(this.skillsList, this.cellsPerRow)}
 						</section>
 
 						<section id="projects">
-							<h4>Country Projects</h4>
+							<h2>Country Projects</h2>
+							<p>
+								<i
+									>Note: Submitters are all at different points in their SEL/SS
+									measurement processes. The information below indicates that a
+									project was able to report specific action steps they are
+									taking at the time of survey response. Lack of information
+									here indicates that the project did not report any relevant
+									information regarding action steps at this time.</i
+								>
+							</p>
 							${[
 								...this.state.projectsByCountry.get(this.state.selectedCountry)
 							].map(project => {
 								return html`<details>
 									${programInfo(
 										project,
-										this.state.challengesByProject.get(project)
+										this.state.challengesByProject.get(project),
+										this.state.assessmentTypesByProject.get(project)
 									)}
 								</details>`;
 							})}
 						</section>
 				  `
 				: ''}
-
-			<pre><code>${this.prettyJson}</code></pre>
 		</main>`;
 	}
 
 	firstUpdated() {
+		this.containerWidth =
+			this.shadowRoot.querySelector('main.container').clientWidth;
+
+		window.addEventListener('resize', this.resizeCallback.bind(this));
+
 		this.disposers.push(
+			() => window.removeEventListener('resize', this.resizeCallback),
 			autorun(() => {
 				this.state.selectedCountry;
 				this.closeDetails();
@@ -86,11 +104,35 @@ export class UsgApp extends Provider {
 		);
 	}
 
+	@action
+	private resizeCallback(e: Event) {
+		this.containerWidth =
+			this.shadowRoot.querySelector('main.container').clientWidth;
+	}
+
 	private async closeDetails() {
 		await this.updateComplete;
 		this.shadowRoot
 			.querySelectorAll('details')
 			.forEach(detail => detail.removeAttribute('open'));
+	}
+
+	containerWidth: number;
+
+	@computed
+	get cellsPerRow() {
+		switch (this.containerWidth) {
+			case 1130:
+				return 6;
+			case 920:
+				return 6;
+			case 700:
+				return 5;
+			case 510:
+				return 3;
+			default:
+				return 3;
+		}
 	}
 
 	@computed

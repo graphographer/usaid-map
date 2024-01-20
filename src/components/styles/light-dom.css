@@ -1,0 +1,38 @@
+:root {
+    --font-family: 'Source Sans Pro',
+        sans-serif;
+    --usaid-blue: #002F6C;
+    --usaid-red: #BA0C2F;
+    --rich-black: #212721;
+    --medium-blue: #0067B9;
+    --light-blue: #A7C6ED;
+    --web-blue: #205493;
+    --dark-red: #651D32;
+    --dark-gray: #6C6463;
+    --medium-gray: #8C8985;
+    --light-gray: #CFCDC9;
+
+    
+    --line-height: initial;
+    --font-weight: initial;
+    --font-size: 100%;
+    --border-radius: 3px;
+    --border-width: 1px;
+    --outline-width: 3px;
+    --spacing: 1rem;
+    --typography-spacing-vertical: 1.5rem;
+    --block-spacing-vertical: calc(var(--spacing) * 2);
+    --block-spacing-horizontal: var(--spacing);
+    --grid-spacing-vertical: 0;
+    --grid-spacing-horizontal: var(--spacing);
+    --form-element-spacing-vertical: 0.75rem;
+    --form-element-spacing-horizontal: 1rem;
+    --transition: 0.2s ease-in-out;
+    --nav-element-spacing-vertical: 1rem;
+    --nav-element-spacing-horizontal: 0.5rem;
+    --nav-link-spacing-vertical: 0.5rem;
+    --nav-link-spacing-horizontal: 0.5rem;
+    --form-label-font-weight: var(--font-weight);
+    --modal-overlay-backdrop-filter: blur(0.25rem);
+
+}

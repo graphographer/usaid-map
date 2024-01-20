@@ -1,12 +1,14 @@
+import { groupBy, pickBy } from 'lodash';
 import { makeAutoObservable, observable } from 'mobx';
-import { TDataEntries, TDataEntry } from './types';
 import { CHALLENGE_AREAS, PRECISE_CHALLENGE_AREAS } from './challenge_areas';
-import { Dictionary, entries, groupBy, pickBy } from 'lodash';
+import { TDataEntries, TDataEntry } from './types';
+import { EDUCATION_LEVELS } from './education_levels';
+import { ASSESSMENT_TYPES } from './assessment_types';
 
 export class State {
 	data: TDataEntries;
 
-	selectedCountry: string = 'Brazil';
+	selectedCountry: string = 'Tanzania';
 	selectedChallengeArea: string = '';
 	selectedEducationLevel: string = '';
 	selectedSkill: string = '';
@@ -19,24 +21,77 @@ export class State {
 		});
 	}
 
-	get selectedCountrySkills() {
+	static perCountryRegex = new RegExp(/^In\s(.*):$/gm);
+	get selectedCountrySkills(): string[] {
 		if (!this.selectedCountry) return [];
 
 		return [
 			...this.projectsByCountry
 				.get(this.selectedCountry)
-				.reduce((acc, project) => {
-					project.Skills.forEach(skill => acc.add(skill));
+				.reduce<Set<string>>((acc, project) => {
+					let skills = project['Common Skills'];
+					const hasCountries = skills.find(skill =>
+						skill.match(State.perCountryRegex)
+					);
+
+					if (hasCountries) {
+						const perCountry: Record<string, string[]> = skills
+							.map<[string, number] | undefined>((skill, i) => {
+								const match = skill.matchAll(State.perCountryRegex);
+								if (match) {
+									const matchArray = [...match];
+
+									if (!matchArray.length) return;
+
+									const country = matchArray[0][1];
+
+									return [country, i + 1];
+								} else return;
+							})
+							.filter(Boolean)
+							.reduce((acc, [country, startIndex], i, list) => {
+								acc[country] = skills.slice(
+									startIndex,
+									i < list.length - 1 ? list[i + 1][1] - 1 : undefined
+								);
+								return acc;
+							}, {});
+
+						skills = perCountry[this.selectedCountry];
+					}
+
+					project['Common Skills'].forEach(skill => acc.add(skill));
+
 					return acc;
 				}, new Set())
 		];
 	}
 
+	get assessmentTypesByProject(): Map<TDataEntry, string[]> {
+		return new Map(
+			this.data.map(project => {
+				const assessmentTypes = ASSESSMENT_TYPES.filter(
+					([type]) => project[type] === '1'
+				);
+
+				return [project, assessmentTypes.map(([, val]) => val)];
+			})
+		);
+	}
+
 	get allCountries() {
-		return [...new Set(this.data.map(entry => entry.Country).flat())].sort();
+		return [
+			...new Set(
+				this.data
+					.map(entry => entry.Country.filter(country => country !== 'Globally'))
+					.flat()
+			)
+		].sort();
 	}
 	get allSkills() {
-		return [...new Set(this.data.map(entry => entry.Skills).flat())].sort();
+		return [...new Set(this.data.map(entry => entry['Common Skills']).flat())]
+			.filter(skill => !skill.match(State.perCountryRegex))
+			.sort();
 	}
 
 	get entriesByChallengeArea(): Map<string, TDataEntry[]> {
@@ -138,9 +193,7 @@ export class State {
 	}
 
 	get educationLevels() {
-		return [
-			...new Set(this.data.map(entry => entry['Level of Education']).flat())
-		];
+		return EDUCATION_LEVELS;
 	}
 
 	get selectedCountryProjects() {

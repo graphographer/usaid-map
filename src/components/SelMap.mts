@@ -75,12 +75,14 @@ export class SelMap extends Provider {
 	protected async firstUpdated() {
 		const geodata = await import('../data/geodata.json');
 
-		const geoCountries = geodata.features.map(
-			feature => feature.properties.name
-		);
+		const geoCountries = geodata.features
+			.map(feature => feature.properties.name?.toLowerCase())
+			.filter(Boolean);
 		console.log(
 			'Missing or mismatched Geofeatures',
-			this.state.allCountries.filter(country => !geoCountries.includes(country))
+			this.state.allCountries.filter(
+				country => !geoCountries.includes(country.toLowerCase())
+			)
 		);
 
 		this.leafletMap = map(this.mapEl).setView([0, 0], 2);

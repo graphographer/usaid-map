@@ -7347,7 +7347,7 @@
 		{
 			"type": "Feature",
 			"id": "LAO",
-			"properties": { "name": "Lao PDR" },
+			"properties": { "name": "Laos" },
 			"geometry": {
 				"type": "Polygon",
 				"coordinates": [
@@ -13346,7 +13346,7 @@
 		{
 			"type": "Feature",
 			"id": "PSE",
-			"properties": { "name": "West Bank Gaza" },
+			"properties": { "name": "West Bank and Gaza" },
 			"geometry": {
 				"type": "Polygon",
 				"coordinates": [

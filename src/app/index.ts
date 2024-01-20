@@ -5,7 +5,7 @@ import 'style-loader!@picocss/pico/css/pico.min.css';
 import 'style-loader!../components/styles/light-dom.css';
 
 async function start() {
-	const usgData = (await import('../data/usg_data.csv'))
+	const usgData = (await import('../data/usaid_data.csv'))
 		.default as TDataEntries;
 
 	const state = new State(usgData);

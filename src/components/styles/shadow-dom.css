@@ -1,27 +1,80 @@
 :host {
-    --primary: #002f6c;
-    --primary-hover: #234b84;
-    --border-width: 2px;
+    --h2-color: var(--usaid-blue);
+
+    --color: var(--rich-black);
+
+    --primary: var(--light-gray);
+    --primary-hover: var(--medium-gray);
+    --primary-inverse: var(--usaid-blue);
+
+    --table-border-color: var(--rich-black);
+}
+
+a {
+    color: var(--web-blue);
+}
+
+:not(thead, tfoot)>*>td {
+    --font-size: 100%;
 }
 
 details {
-    border-bottom: none;
+    /* border-bottom: none; */
     padding-bottom: 0;
+    border: 1px solid #dddddd;
+    border-radius: var(--border-radius);
+}
+
+details summary[role="button"]::after {
+    background-image: var(--icon-chevron);
+}
+
+summary[role="button"] {
+    color: var(--usaid-blue);
+    background-color: #ededed;
+    border: 1px solid var(--usaid-blue);
+    border-radius: var(--border-radius);
+}
+
+summary[role="button"]:hover {
+    background-color: #cccccc;
+}
+
+summary[role="button"]:focus, select:focus {
+    outline: auto;
+    --box-shadow: none;
 }
 
 details > summary + * {
-    background-color: #f4f4f4;
+    background-color: white;
     padding: var(--spacing);
     border-radius: var(--border-radius);
 }
 
 details[open] > summary {
+    background-color: var(--light-blue);
     margin-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+details[open] > summary:hover {
+    background-color: var(--light-blue);
 }
 
 .checkmark {
-    width: 3rem;
-    content: url("../../images/usaid_checkmark.png")
+    color: transparent;
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 2.5rem;
+    width: 1.5rem;
+    border-bottom: 0.6rem solid var(--web-blue);
+    border-right: 0.6rem solid var(--web-blue);
+    margin-bottom: 0.5rem;
+}
+
+thead th, thead td {
+    --border-width: inherit;
 }
 
 .checklist {
@@ -30,16 +83,54 @@ details[open] > summary {
 
 .checklist td, .checklist th {
     border: var(--border-width) solid var(--table-border-color);
+    border-radius: var(--border-radius);
     text-align: center;
 }
 
 .checklist td {
+    max-width: 188.16px;
     height: 72px;
 }
 
 select {
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+#projects ul li {
+    list-style-type: none;
+}
+
+ul.overview>li {
+    margin-bottom: var(--typography-spacing-vertical);
+}
+
+section#projects summary {
+    position: sticky;
+    top: 0;
+}
+
+.current-country {
+    color: var(--medium-gray);
+    margin-bottom: 1em;
+    font-size: 1.5em;
+}
+
+details>ul {
+    margin-bottom: 0;
+}
+
+table caption {
+    text-align: left;
+    margin-bottom: var(--typography-spacing-vertical);
+}
+
+table th {
+    word-wrap: normal;
+}
+
+table th:first-child:not(:last-child) {
+    border-right: none;
 }
 
 table.challenges {
@@ -63,23 +154,30 @@ table.challenges tbody tr:last-child th:last-child {
 }
 
 table.challenges thead tr th {
-    color: var(--primary-inverse);
-    background-color: var(--primary);
+    color: var(--light-gray);
+    background-color: var(--usaid-blue);
 }
 
 table.challenges tbody th[scope="row"] {
-    color: var(--primary-inverse);
-    background-color: var(--primary-hover);
-}
-
-table.challenges th:not(:last-child) {
-    border-right: var(--table-border-color) solid var(--border-width);
+    color: var(--usaid-blue);
+    background-color: var(--light-blue);
 }
 
 table.challenges td {
     background-color: var(--background-color);
 }
 
-table.challenges tr:last-child {
+table.challenges tr:last-child * {
     border-bottom: none;
+}
+
+details summary + *{
+    transition: height 500ms;
+}
+details:not([open]) summary + * {
+    height: 0;
+}
+
+details[open] summary + * {
+    height: 100%;
 }

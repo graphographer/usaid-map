@@ -45,10 +45,27 @@ module.exports = {
 						return header.trim();
 					},
 					transform(data, header) {
-						// if (!header.trim() || !data.trim()) return undefined;
-
 						if (ARRAY_COLUMNS.includes(header.toLowerCase())) {
-							return [...new Set(data.split('\n').map(val => val.trim()))];
+							const array = [
+								...new Set(
+									data
+										.split('\n')
+										.map(val => {
+											return val.trim();
+										})
+										.filter(Boolean)
+								)
+							];
+
+							// flatten capitalization
+							if (header.toLowerCase() !== 'country') {
+								return array.map(val => {
+									const [first, ...rest] = val;
+									return `${first.toUpperCase()}${rest.join('')}`;
+								});
+							} else {
+								return array;
+							}
 						}
 
 						return data.trim();
