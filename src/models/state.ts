@@ -120,7 +120,10 @@ export class State {
 		return entriesByChallengeArea;
 	}
 
-	get challengesByProject(): Map<TDataEntry, Record<string, string[][]>> {
+	get challengesByProject(): Map<
+		TDataEntry,
+		Record<string, [string, string][]>
+	> {
 		return new Map(
 			this.data.map(project => {
 				const preciseChallenges = pickBy(project, (val, key) =>
@@ -141,7 +144,7 @@ export class State {
 
 						return broad?.[0];
 					}
-				) as Record<string, string[][]>;
+				) as Record<string, [string, string][]>;
 
 				return [project, groupedChallenges];
 			})

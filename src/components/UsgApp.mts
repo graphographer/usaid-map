@@ -1,21 +1,14 @@
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import {
-	action,
-	autorun,
-	computed,
-	makeObservable,
-	observable,
-	runInAction
-} from 'mobx';
+import { action, autorun, computed, makeObservable, observable } from 'mobx';
+import './ChallengesDropdown.mjs';
 import './CountryDropdown.mjs';
 import './EducationDropdown.mjs';
 import { Provider } from './Provider.mjs';
-import './SkillsDropdown.mjs';
-import './ChallengesDropdown.mjs';
 import './SelMap.mjs';
-import { programInfo } from './templates/programInfo';
+import './SkillsDropdown.mjs';
 import { horizontalChecklist } from './templates/horizontalChecklist';
+import { programInfo } from './templates/programInfo';
 
 @customElement('usg-app')
 export class UsgApp extends Provider {
