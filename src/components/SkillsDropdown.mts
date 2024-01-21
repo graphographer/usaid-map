@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { Provider } from './Provider.mjs';
+import { live } from 'lit/directives/live.js';
 
 @customElement('skills-dropdown')
 export class SkillsDropdown extends Provider {
@@ -9,10 +10,12 @@ export class SkillsDropdown extends Provider {
 			<label for="common-skills">
 				Common Skills
 				<select id="common-skills" @change=${this.handleChange}>
-					<option disabed selected value>None Selected</option>
+					<option disabed selected value="">None Selected</option>
 					${this.state.allSkills.map(
-						skill =>
-							html`<option ?selected=${this.state.selectedSkill === skill}>
+						(skill) =>
+							html`<option
+								.selected=${live(this.state.selectedSkill === skill)}
+							>
 								${skill}
 							</option>`
 					)}
@@ -22,7 +25,7 @@ export class SkillsDropdown extends Provider {
 	}
 
 	private handleChange({
-		target: { value }
+		target: { value },
 	}: InputEvent & { target: { value: string } }) {
 		this.state.setSkillsMeasured(value);
 	}

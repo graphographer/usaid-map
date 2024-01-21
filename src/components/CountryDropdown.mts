@@ -1,6 +1,7 @@
 import { html } from 'lit-html';
 import { customElement } from 'lit/decorators.js';
 import { Provider } from './Provider.mjs';
+import { live } from 'lit/directives/live.js';
 
 @customElement('country-dropdown')
 export class CountryDropdown extends Provider {
@@ -8,10 +9,12 @@ export class CountryDropdown extends Provider {
 		return html` <label for="countries">
 			Select a country
 			<select id="countries" @change=${this.handleChange}>
-				<option disabed selected value>None Selected</option>
+				<option disabed selected value="">None Selected</option>
 				${this.state.allCountries.map(
-					country =>
-						html`<option ?selected=${this.state.selectedCountry === country}>
+					(country) =>
+						html`<option
+							.selected=${live(this.state.selectedCountry === country)}
+						>
 							${country}
 						</option>`
 				)}

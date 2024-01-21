@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { Provider } from './Provider.mjs';
+import { live } from 'lit/directives/live.js';
 
 @customElement('education-dropdown')
 export class EducationDropdown extends Provider {
@@ -8,11 +9,13 @@ export class EducationDropdown extends Provider {
 		return html` <label for="education-level">
 			Education Level
 			<select id="education-level" @change=${this.handleChange}>
-				<option disabed selected value>None Selected</option>
+				<option disabed selected value="">None Selected</option>
 				${this.state.educationLevels.map(
-					educationLevel =>
+					(educationLevel) =>
 						html`<option
-							?selected=${this.state.selectedEducationLevel === educationLevel}
+							.selected=${live(
+								this.state.selectedEducationLevel === educationLevel
+							)}
 						>
 							${educationLevel}
 						</option>`
