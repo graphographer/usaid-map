@@ -8,10 +8,16 @@
     --primary-inverse: var(--usaid-blue);
 
     --table-border-color: var(--rich-black);
+
+    /* --typography-spacing-vertical: 1rem; */
 }
 
 a {
     color: var(--web-blue);
+}
+
+caption p:last-child {
+    margin-bottom: 0;
 }
 
 :not(thead, tfoot)>*>td {
@@ -66,10 +72,10 @@ details[open] > summary:hover {
     color: transparent;
     display: inline-block;
     transform: rotate(45deg);
-    height: 2.5rem;
-    width: 1.5rem;
-    border-bottom: 0.6rem solid var(--web-blue);
-    border-right: 0.6rem solid var(--web-blue);
+    height: 2rem;
+    width: 1rem;
+    border-bottom: 0.4rem solid var(--web-blue);
+    border-right: 0.4rem solid var(--web-blue);
     margin-bottom: 0.5rem;
 }
 
@@ -82,14 +88,11 @@ thead th, thead td {
 }
 
 .checklist td, .checklist th {
+    padding: calc(var(--spacing) / 3) calc(var(--spacing) / 2);
     border: var(--border-width) solid var(--table-border-color);
     border-radius: var(--border-radius);
     text-align: center;
-}
-
-.checklist td {
-    max-width: 188.16px;
-    height: 72px;
+    height: 52px;
 }
 
 select {
@@ -131,10 +134,6 @@ table th {
 
 table th:first-child:not(:last-child) {
     border-right: none;
-}
-
-table.challenges {
-    margin-top: var(--spacing);
 }
 
 table.challenges thead tr:first-child th:first-child {

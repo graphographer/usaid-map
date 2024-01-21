@@ -10,6 +10,8 @@ import './SkillsDropdown.mjs';
 import { horizontalChecklist } from './templates/horizontalChecklist';
 import { programInfo } from './templates/programInfo';
 
+const PROJECT_INSTRUCTIONS = `Click on a project name below to see detailed information about the project background, SEL/SS skills measurement information, and action steps the project is taking to address SEL/SS measurement challenges.`;
+
 @customElement('usg-app')
 export class UsgApp extends Provider {
 	static styles = [
@@ -46,25 +48,18 @@ export class UsgApp extends Provider {
 			${this.state.selectedCountry
 				? html`
 						<section>
-							<h2>Education Level(s) Targeted by Projects</h2>
+							<h2>Education Level(s) Targeted by Projects in this Country</h2>
 							${horizontalChecklist(this.educationLevelsList, this.cellsPerRow)}
 						</section>
 						<section>
-							<h2>Skills Targeted by Activities for this Country</h2>
+							<h2>Skills Targeted by Projects for this Country</h2>
 							${horizontalChecklist(this.skillsList, this.cellsPerRow)}
 						</section>
 
 						<section id="projects">
-							<h2>Country Projects</h2>
+							<h2>Projects in this Country Addressing SEL/SS Measurement</h2>
 							<p>
-								<i
-									>Note: Submitters are all at different points in their SEL/SS
-									measurement processes. The information below indicates that a
-									project was able to report specific action steps they are
-									taking at the time of survey response. Lack of information
-									here indicates that the project did not report any relevant
-									information regarding action steps at this time.</i
-								>
+								<em>${PROJECT_INSTRUCTIONS}</em>
 							</p>
 							${[
 								...this.state.projectsByCountry.get(this.state.selectedCountry)
@@ -117,15 +112,15 @@ export class UsgApp extends Provider {
 	get cellsPerRow() {
 		switch (this.containerWidth) {
 			case 1130:
-				return 6;
+				return 7;
 			case 920:
-				return 6;
+				return 7;
 			case 700:
-				return 5;
+				return 6;
 			case 510:
-				return 3;
+				return 4;
 			default:
-				return 3;
+				return 4;
 		}
 	}
 
