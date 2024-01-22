@@ -152,7 +152,6 @@ export class UsgApp extends Provider {
 	}
 
 	setModalIsOpen(val: boolean) {
-		console.log('MODAL', val);
 		this.modalIsOpen = val;
 	}
 	modalIsOpen: boolean = false;
