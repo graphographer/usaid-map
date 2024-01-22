@@ -48,7 +48,8 @@ export class UsgApp extends Provider {
 	}
 
 	render() {
-		return html` <main class="container">
+		return html` ${this.skillsNote}
+			<main class="container">
 				<section>
 					<country-dropdown></country-dropdown>
 
@@ -61,7 +62,9 @@ export class UsgApp extends Provider {
 					</div>
 				</section>
 
-				<div class="current-country">${this.state.selectedCountry}</div>
+				<div tabindex="0" id="current-country">
+					${this.state.selectedCountry}
+				</div>
 
 				${this.state.selectedCountry
 					? html`
@@ -80,6 +83,7 @@ export class UsgApp extends Provider {
 											data-target="#common-skills-definition"
 										>
 											?
+											<span class="sr-only">Definition of "Common Skills"</span>
 										</button></sup
 									>
 									Targeted by Projects for this Country
@@ -108,18 +112,18 @@ export class UsgApp extends Provider {
 							</section>
 					  `
 					: ''}
-			</main>
-
-			${this.skillsNote}`;
+			</main>`;
 	}
 
 	get skillsNote() {
 		return html`<dialog
+			tabindex="0"
 			id="common-skills-definition"
 			?open=${this.modalIsOpen}
 			role="dialog"
 			aria-labelledby="title"
 			aria-describedby="description"
+			aria-modal="true"
 		>
 			<article>
 				<header id="title">
@@ -137,8 +141,6 @@ export class UsgApp extends Provider {
 
 	private handleClick(e) {
 		const [target] = e.composedPath();
-
-		console.log('TARGET', target);
 
 		if (target.dataset.target === '#close-modal') {
 			this.setModalIsOpen(false);
@@ -158,12 +160,29 @@ export class UsgApp extends Provider {
 			autorun(() => {
 				this.state.selectedCountry;
 				this.closeDetails();
+				// this.shadowRoot.getElementById('current-country').focus();
 			})
 		);
 	}
 
+	private previouslyActiveElement: HTMLElement;
 	setModalIsOpen(val: boolean) {
 		this.modalIsOpen = val;
+
+		const modal = this.shadowRoot.getElementById('common-skills-definition');
+		if (val) {
+			this.previouslyActiveElement = this.shadowRoot
+				.activeElement as HTMLElement;
+			setTimeout(() => {
+				modal.focus();
+				console.log('FOCUSED', this.shadowRoot.activeElement);
+			});
+		} else {
+			// this.shadowRoot.getElementById('common-skills-definition').blur();
+			setTimeout(() => {
+				this.previouslyActiveElement?.focus();
+			});
+		}
 	}
 	modalIsOpen: boolean = false;
 

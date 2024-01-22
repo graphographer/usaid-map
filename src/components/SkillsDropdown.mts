@@ -12,7 +12,7 @@ export class SkillsDropdown extends Provider {
 				Common Skills
 				<em
 					><button data-target="#common-skills-definition" class="link">
-						?
+						? <span class="sr-only">"Common Skills" defintion</span>
 					</button></em
 				>
 				<select id="common-skills" @change=${this.handleChange}>
