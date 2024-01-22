@@ -1,0 +1,52 @@
+/*!
+ * Pico CSS v1.5.10 (https://picocss.com)
+ * Copyright 2019-2023 - Licensed under MIT
+ *
+ * Slim version example
+ * You can export only the modules you need
+ */
+
+// Config
+// --------------------
+
+// Enable responsive spacings for <header>, <main>, <footer>, <section>, <article>
+$enable-responsive-spacings: false;
+
+// Enable transitions
+$enable-transitions: false;
+
+// Enable overriding with !important
+$enable-important: false;
+
+// Pico Lib
+// --------------------
+
+// Config
+@import "~@picocss/pico/scss/variables";
+
+// Theming
+@import "./custom-pico-theme.scss";
+
+// Modules
+@import '~@picocss/pico/scss/components/modal';
+@import '~@picocss/pico/scss/components/accordion';
+@import '~@picocss/pico/scss/components/card';
+
+// // Layout
+@import "~@picocss/pico/scss/layout/document"; // html
+@import "~@picocss/pico/scss/layout/sectioning"; // body, header, main, footer
+@import "~@picocss/pico/scss/layout/container"; // .container, .container-fluid
+@import "~@picocss/pico/scss/layout/section"; // section
+@import "~@picocss/pico/scss/layout/grid"; // .grid
+// @import "layout/scroller"; // figure
+
+// // Content
+@import "~@picocss/pico/scss/content/typography"; // a, headings, p, ul, blockquote, ...
+// @import "content/embedded"; // audio, canvas, iframe, img, svg, video
+@import "~@picocss/pico/scss/content/button"; // button, a[role=button], type=button, type=submit ...
+@import "~@picocss/pico/scss/content/form"; // input, select, textarea, label, fieldset, legend
+@import "~@picocss/pico/scss/content/table"; // table, tr, td, ...
+
+// // Utilities
+@import "~@picocss/pico/scss/utilities/accessibility"; // -ms-touch-action, aria-*
+@import "~@picocss/pico/scss/utilities/reduce-motion"; // prefers-reduced-motion

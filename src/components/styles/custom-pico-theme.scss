@@ -1,0 +1,22 @@
+/**
+ * Theme: default
+ */
+
+// Variables
+@import "~@picocss/pico/scss/variables";
+@import "~@picocss/pico/scss/themes/default/colors";
+
+// Commons styles
+@import "~@picocss/pico/scss/themes/default/styles";
+
+// Light theme (Default)
+// Can be forced with data-theme="light"
+@import "~@picocss/pico/scss/themes/default/light";
+
+// Accent-color
+progress,
+[type="checkbox"],
+[type="radio"],
+[type="range"] {
+    accent-color: var(--primary);
+}

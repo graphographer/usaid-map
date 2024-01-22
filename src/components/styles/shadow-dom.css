@@ -1,3 +1,5 @@
+@import './custom-pico.scss';
+
 :host {
     --h2-color: var(--usaid-blue);
 
@@ -8,8 +10,6 @@
     --primary-inverse: var(--usaid-blue);
 
     --table-border-color: var(--rich-black);
-
-    /* --typography-spacing-vertical: 1rem; */
 }
 
 a {

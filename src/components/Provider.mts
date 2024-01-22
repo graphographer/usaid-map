@@ -1,6 +1,5 @@
 import { MobxLitElement } from '@adobe/lit-mobx';
-import picoCss from '@picocss/pico/css/pico.min.css';
-import { unsafeCSS } from 'lit';
+import { css, unsafeCSS } from 'lit';
 import { stateProvider } from '../models/state';
 import shadowDomCss from './styles/shadow-dom.css';
 
@@ -12,8 +11,9 @@ export class Provider extends MobxLitElement {
 	}
 
 	static styles = [
-		unsafeCSS(picoCss.toString()),
-		unsafeCSS(shadowDomCss.toString())
+		css`
+			${unsafeCSS(shadowDomCss.toString())}
+		`
 	];
 
 	disconnectedCallback(): void {

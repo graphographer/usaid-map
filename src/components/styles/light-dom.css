@@ -1,3 +1,5 @@
+@import './custom-pico.scss';
+
 :root {
     --font-family: 'Source Sans Pro',
         sans-serif;
@@ -12,7 +14,7 @@
     --medium-gray: #8C8985;
     --light-gray: #CFCDC9;
 
-    
+
     --line-height: initial;
     --font-weight: initial;
     --font-size: 100%;
@@ -34,5 +36,4 @@
     --nav-link-spacing-horizontal: 0.5rem;
     --form-label-font-weight: var(--font-weight);
     --modal-overlay-backdrop-filter: blur(0.25rem);
-
 }
