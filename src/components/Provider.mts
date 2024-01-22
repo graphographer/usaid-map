@@ -10,11 +10,7 @@ export class Provider extends MobxLitElement {
 		return stateProvider.get();
 	}
 
-	static styles = [
-		css`
-			${unsafeCSS(shadowDomCss.toString())}
-		`
-	];
+	static styles = [unsafeCSS(shadowDomCss.toString())];
 
 	disconnectedCallback(): void {
 		super.disconnectedCallback();
