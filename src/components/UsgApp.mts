@@ -11,6 +11,8 @@ import { horizontalChecklist } from './templates/horizontalChecklist';
 import { programInfo } from './templates/programInfo';
 
 const PROJECT_INSTRUCTIONS = `Click on a project name below to see detailed information about the project background, SEL/SS skills measurement information, and action steps the project is taking to address SEL/SS measurement challenges.`;
+const COMMON_SKILLS_NOTE =
+	'Please note that “common skills” reflect those that were most frequently reported among survey respondents. The inclusion of these particular skills within the filter does not indicate USAID and/or UNICEF endorsement of this terminology or these particular skills for the given context.';
 
 @customElement('usg-app')
 export class UsgApp extends Provider {
@@ -21,61 +23,117 @@ export class UsgApp extends Provider {
 				display: block;
 				margin-top: var(--spacing);
 			}
+
+			#common-skills-definition {
+				z-index: 1200;
+			}
 		`
 	];
 
 	constructor() {
 		super();
-		makeObservable(this, { containerWidth: observable });
+
+		makeObservable(this, {
+			containerWidth: observable,
+			modalIsOpen: observable,
+			setModalIsOpen: action
+		});
+
+		this.addEventListener('click', this.handleClick.bind(this));
+		this.addEventListener('keydown', e => {
+			if (e.key === 'Escape' && this.modalIsOpen) {
+				this.setModalIsOpen(false);
+			}
+		});
 	}
 
 	render() {
 		return html` <main class="container">
-			<section>
-				<country-dropdown></country-dropdown>
+				<section>
+					<country-dropdown></country-dropdown>
 
-				<sel-map></sel-map>
+					<sel-map></sel-map>
 
-				<div class="grid">
-					<challenges-dropdown></challenges-dropdown>
-					<education-dropdown></education-dropdown>
-					<skills-dropdown></skills-dropdown>
-				</div>
-			</section>
+					<div class="grid">
+						<challenges-dropdown></challenges-dropdown>
+						<education-dropdown></education-dropdown>
+						<skills-dropdown></skills-dropdown>
+					</div>
+				</section>
 
-			<div class="current-country">${this.state.selectedCountry}</div>
+				<div class="current-country">${this.state.selectedCountry}</div>
 
-			${this.state.selectedCountry
-				? html`
-						<section>
-							<h2>Education Level(s) Targeted by Projects in this Country</h2>
-							${horizontalChecklist(this.educationLevelsList, this.cellsPerRow)}
-						</section>
-						<section>
-							<h2>Skills Targeted by Projects for this Country</h2>
-							${horizontalChecklist(this.skillsList, this.cellsPerRow)}
-						</section>
+				${this.state.selectedCountry
+					? html`
+							<section>
+								<h2>Education Level(s) Targeted by Projects in this Country</h2>
+								${horizontalChecklist(
+									this.educationLevelsList,
+									this.cellsPerRow
+								)}
+							</section>
+							<section>
+								<h2>
+									Common Skills<sup class="info"
+										><a href="#common-skills-definition">?</a></sup
+									>
+									Targeted by Projects for this Country
+								</h2>
+								${horizontalChecklist(this.skillsList, this.cellsPerRow)}
+							</section>
 
-						<section id="projects">
-							<h2>Projects in this Country Addressing SEL/SS Measurement</h2>
-							<p>
-								<em>${PROJECT_INSTRUCTIONS}</em>
-							</p>
-							${[
-								...this.state.projectsByCountry.get(this.state.selectedCountry)
-							].map(project => {
-								return html`<details>
-									${programInfo(
-										project,
-										this.state.challengesByProject.get(project),
-										this.state.assessmentTypesByProject.get(project)
-									)}
-								</details>`;
-							})}
-						</section>
-				  `
-				: ''}
-		</main>`;
+							<section id="projects">
+								<h2>Projects in this Country Addressing SEL/SS Measurement</h2>
+								<p>
+									<em>${PROJECT_INSTRUCTIONS}</em>
+								</p>
+								${[
+									...this.state.projectsByCountry.get(
+										this.state.selectedCountry
+									)
+								].map(project => {
+									return html`<details>
+										${programInfo(
+											project,
+											this.state.challengesByProject.get(project),
+											this.state.assessmentTypesByProject.get(project)
+										)}
+									</details>`;
+								})}
+							</section>
+					  `
+					: ''}
+			</main>
+
+			${this.skillsNote}`;
+	}
+
+	get skillsNote() {
+		return html`<dialog
+			id="common-skills-definition"
+			?open=${this.modalIsOpen}
+			role="dialog"
+			aria-labelledby="title"
+			aria-describedby="description"
+		>
+			<article>
+				<header id="title">
+					<a href="#close-modal" aria-label="close" class="close"></a>
+					"Common Skills"
+				</header>
+				<p id="description">${COMMON_SKILLS_NOTE}</p>
+			</article>
+		</dialog>`;
+	}
+
+	private handleClick(e) {
+		const [target] = e.composedPath();
+
+		if (target.hash === '#close-modal') {
+			this.setModalIsOpen(false);
+		} else if (target.hash === '#common-skills-definition') {
+			this.setModalIsOpen(true);
+		}
 	}
 
 	firstUpdated() {
@@ -93,6 +151,12 @@ export class UsgApp extends Provider {
 		);
 	}
 
+	setModalIsOpen(val: boolean) {
+		console.log('MODAL', val);
+		this.modalIsOpen = val;
+	}
+	modalIsOpen: boolean = false;
+
 	@action
 	private resizeCallback(e: Event) {
 		this.containerWidth =
@@ -106,7 +170,7 @@ export class UsgApp extends Provider {
 			.forEach(detail => detail.removeAttribute('open'));
 	}
 
-	containerWidth: number;
+	containerWidth: number = 0;
 
 	@computed
 	get cellsPerRow() {

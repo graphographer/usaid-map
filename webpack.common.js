@@ -24,8 +24,16 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.css$/,
-				loader: 'css-loader'
+				test: /\.(s?)css$/i,
+				use: [
+					{ loader: 'css-loader' },
+					{
+						loader: 'sass-loader',
+						options: {
+							implementation: require('dart-sass')
+						}
+					}
+				]
 			},
 			csvRule,
 			// all files with a `.ts`, `.cts`, `.mts` or `.tsx` extension will be handled by `ts-loader`

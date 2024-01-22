@@ -9,14 +9,12 @@ const merged = mergeWithRules({
 	}
 })(common, {
 	mode: 'production',
-	plugins: [
-		// new BundleAnalyzer()
-	],
+	plugins: [new BundleAnalyzer()],
 	devtool: 'source-map',
 	module: {
 		rules: [
 			{
-				test: /\.css$/,
+				test: /\.(s?)css$/i,
 				use: [
 					{ loader: 'css-loader', options: { sourceMap: true } },
 					{
@@ -35,6 +33,12 @@ const merged = mergeWithRules({
 									require('autoprefixer')
 								]
 							}
+						}
+					},
+					{
+						loader: 'sass-loader',
+						options: {
+							implementation: require('dart-sass')
 						}
 					}
 				]

@@ -12,6 +12,10 @@
     --table-border-color: var(--rich-black);
 }
 
+.info {
+    font-size: 75%;
+}
+
 a {
     color: var(--web-blue);
 }

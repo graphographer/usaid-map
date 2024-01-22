@@ -1,8 +1,9 @@
 import { TemplateResult, html } from 'lit';
 import { TDataEntry } from '../../models/types';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const NO_RESPONSE = '[NO RESPONSE]';
-const ACTION_STEPS_NOTE = `Note: Submitters are all at different points in their SEL/SS measurement processes. The information below indicates that a project was able to report specific action steps they are taking at the time of survey response. Lack of information here indicates that the project did not report any relevant information regarding action steps at this time.`;
+const ACTION_STEPS_NOTE = `Note: Submitters are all at different points in their SEL/SS measurement processes. If a project was able to report specific action steps they are taking at the time of survey response, that information appears here. Lack of information indicates that the project did not report any relevant information regarding action steps.`;
 
 function filterNoResponse(
 	header: string,
@@ -84,58 +85,68 @@ export const programInfo = (
 				</ul>
 			</li>
 
-			${hasChallenges(challengeAreas)
-				? html`<li>
-						<caption for="challenges">
-							<b
-								>Action steps project is taking to address SEL/SS measurement
-								challenges</b
+			<li>
+				<ul>
+					<li>
+						<table class="challenges">
+							<caption
+								for="challenges"
+								style=${styleMap({
+									'margin-bottom': hasChallenges(challengeAreas)
+										? undefined
+										: '0'
+								})}
 							>
-							<p>
-								<em>${ACTION_STEPS_NOTE}</em>
-							</p>
-						</caption>
-						<ul>
-							<li>
-								<table class="challenges" id="challenges">
-									<thead>
-										<tr>
-											<th scope="col">Broad Challenge Area</th>
-											<th scope="col">Precise Challenge Area</th>
-										</tr>
-									</thead>
-									<tbody>
-										${Object.entries(challengeAreas).map(
-											([broad, precises]) => {
-												if (
-													!precises.filter(
-														([area, comment]) =>
-															comment !== NO_RESPONSE && comment !== ''
-													).length
-												) {
-													return '';
-												}
+								<b
+									>Action steps project is taking to address SEL/SS measurement
+									challenges</b
+								>
+								<p>
+									<em>${ACTION_STEPS_NOTE}</em>
+								</p>
+							</caption>
+							${hasChallenges(challengeAreas)
+								? html` <thead>
+											<tr>
+												<th scope="col">Broad Challenge Area</th>
+												<th scope="col">Precise Challenge Area</th>
+											</tr>
+										</thead>
+										<tbody>
+											${Object.entries(challengeAreas).map(
+												([broad, precises]) => {
+													if (
+														!precises.filter(
+															([area, comment]) =>
+																comment !== NO_RESPONSE && comment !== ''
+														).length
+													) {
+														return '';
+													}
 
-												return html`
-													<tr>
-														<th scope="row">${broad}</th>
-														<td>
-															${precises.map(([area, comment]) => {
-																return comment === NO_RESPONSE || comment === ''
-																	? ''
-																	: html`<p><b>${area}</b><br />${comment}</p>`;
-															})}
-														</td>
-													</tr>
-												`;
-											}
-										)}
-									</tbody>
-								</table>
-							</li>
-						</ul>
-				  </li>`
-				: ''}
+													return html`
+														<tr>
+															<th scope="row">${broad}</th>
+															<td>
+																${precises.map(([area, comment]) => {
+																	return comment === NO_RESPONSE ||
+																		comment === ''
+																		? ''
+																		: html`<p>
+																				<b>${area}</b><br />${comment}
+																		  </p>`;
+																})}
+															</td>
+														</tr>
+													`;
+												}
+											)}
+										</tbody>`
+								: ''}
+						</table>
+					</li>
+				</ul>
+			</li>
 		</ul>
 	`;
 };
