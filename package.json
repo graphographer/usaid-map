@@ -27,7 +27,6 @@
 		"postcss": "^8.4.32",
 		"postcss-import": "^15.1.0",
 		"postcss-loader": "^7.3.3",
-		"sass": "^1.70.0",
 		"sass-loader": "^14.0.0",
 		"style-loader": "^3.3.3",
 		"ts-loader": "^9.5.1",

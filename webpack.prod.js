@@ -9,7 +9,7 @@ const merged = mergeWithRules({
 	}
 })(common, {
 	mode: 'production',
-	plugins: [new BundleAnalyzer()],
+	// plugins: [new BundleAnalyzer()],
 	devtool: 'source-map',
 	module: {
 		rules: [
