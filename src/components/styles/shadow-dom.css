@@ -13,11 +13,26 @@
 }
 
 .info {
-    font-size: 75%;
+    font-size: 90%;
 }
 
 a {
     color: var(--web-blue);
+}
+
+button.link {
+    font-style: inherit;
+    display: inline;
+    margin: 0;
+    background-color: unset;
+    border: none;
+    padding: 0;
+    color: var(--web-blue);
+    cursor: pointer;
+    width: unset;
+}
+button.link:hover {
+    text-decoration: underline;
 }
 
 caption p:last-child {

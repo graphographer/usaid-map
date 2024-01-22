@@ -75,7 +75,12 @@ export class UsgApp extends Provider {
 							<section>
 								<h2>
 									Common Skills<sup class="info"
-										><a href="#common-skills-definition">?</a></sup
+										><button
+											class="link info"
+											data-target="#common-skills-definition"
+										>
+											?
+										</button></sup
 									>
 									Targeted by Projects for this Country
 								</h2>
@@ -118,7 +123,11 @@ export class UsgApp extends Provider {
 		>
 			<article>
 				<header id="title">
-					<a href="#close-modal" aria-label="close" class="close"></a>
+					<button
+						data-target="#close-modal"
+						aria-label="close"
+						class="link close"
+					></button>
 					"Common Skills"
 				</header>
 				<p id="description">${COMMON_SKILLS_NOTE}</p>
@@ -129,9 +138,11 @@ export class UsgApp extends Provider {
 	private handleClick(e) {
 		const [target] = e.composedPath();
 
-		if (target.hash === '#close-modal') {
+		console.log('TARGET', target);
+
+		if (target.dataset.target === '#close-modal') {
 			this.setModalIsOpen(false);
-		} else if (target.hash === '#common-skills-definition') {
+		} else if (target.dataset.target === '#common-skills-definition') {
 			this.setModalIsOpen(true);
 		}
 	}
