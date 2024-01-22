@@ -188,8 +188,8 @@ table.challenges thead tr th {
 }
 
 table.challenges tbody th[scope="row"] {
+    background-color: var(--ultralight-blue);
     color: var(--usaid-blue);
-    background-color: var(--light-blue);
 }
 
 table.challenges td {
