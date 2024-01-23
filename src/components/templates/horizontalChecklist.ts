@@ -21,7 +21,9 @@ export const horizontalChecklist = (
 							<tr>
 								${list.map(([, checked]) => {
 									return html`<td>
-										${checked ? html`<i class="checkmark">&check;</i>` : ''}
+										${checked
+											? html`<span class="checkmark">&check;</span>`
+											: ''}
 									</td>`;
 								})}
 							</tr>
