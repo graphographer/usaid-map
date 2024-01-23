@@ -8,7 +8,7 @@ import { ASSESSMENT_TYPES } from './assessment_types';
 export class State {
 	data: TDataEntries;
 
-	selectedCountry: string = 'Tanzania';
+	selectedCountry: string = '';
 	selectedChallengeArea: string = '';
 	selectedEducationLevel: string = '';
 	selectedSkill: string = '';
@@ -155,8 +155,8 @@ export class State {
 		const { selectedEducationLevel, selectedSkill, selectedChallengeArea } =
 			this;
 
-		if (!selectedEducationLevel && !selectedSkill && !selectedChallengeArea) {
-			return new Set();
+		if (!this.isFiltered) {
+			return new Set(this.allCountries);
 		}
 
 		let filteredEntries: TDataEntry[] = [...this.data];
@@ -225,6 +225,14 @@ export class State {
 			'Socialization and Buy-In Around SEL/SS Measurement',
 			'Other'
 		];
+	}
+
+	get isFiltered() {
+		return (
+			this.selectedChallengeArea ||
+			this.selectedEducationLevel ||
+			this.selectedChallengeArea
+		);
 	}
 
 	setSelectedCountry(country: string) {

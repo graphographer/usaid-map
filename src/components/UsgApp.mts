@@ -4,11 +4,13 @@ import { action, autorun, computed, makeObservable, observable } from 'mobx';
 import './ChallengesDropdown.mjs';
 import './CountryDropdown.mjs';
 import './EducationDropdown.mjs';
+import './FilterResultsDropdown.mjs';
 import { Provider } from './Provider.mjs';
 import './SelMap.mjs';
 import './SkillsDropdown.mjs';
 import { horizontalChecklist } from './templates/horizontalChecklist';
 import { programInfo } from './templates/programInfo';
+import { classMap } from 'lit/directives/class-map.js';
 
 const PROJECT_INSTRUCTIONS = `Click on a project name below to see detailed information about the project background, SEL/SS skills measurement information, and action steps the project is taking to address SEL/SS measurement challenges.`;
 const COMMON_SKILLS_NOTE =
@@ -36,7 +38,8 @@ export class UsgApp extends Provider {
 		makeObservable(this, {
 			containerWidth: observable,
 			modalIsOpen: observable,
-			setModalIsOpen: action
+			setModalIsOpen: action,
+			resultsFocused: observable
 		});
 
 		this.addEventListener('click', this.handleClick.bind(this));
@@ -55,11 +58,19 @@ export class UsgApp extends Provider {
 
 					<sel-map></sel-map>
 
+					<h4 class="sr-only">Filters</h4>
 					<div class="grid">
 						<challenges-dropdown></challenges-dropdown>
 						<education-dropdown></education-dropdown>
 						<skills-dropdown></skills-dropdown>
 					</div>
+
+					<h4 class="sr-only">Filter Results</h4>
+					<filter-results-dropdown
+						class=${classMap({ 'sr-only': !this.resultsFocused })}
+						@focus=${this.handleResultsFocus.bind(this)}
+						@blur=${this.handleResultsBlur.bind(this)}
+					></filter-results-dropdown>
 				</section>
 
 				<div tabindex="0" id="current-country">
@@ -115,6 +126,16 @@ export class UsgApp extends Provider {
 			</main>`;
 	}
 
+	resultsFocused: boolean = false;
+	@action
+	private handleResultsFocus() {
+		this.resultsFocused = true;
+	}
+	@action
+	private handleResultsBlur() {
+		this.resultsFocused = false;
+	}
+
 	get skillsNote() {
 		return html`<dialog
 			tabindex="0"
@@ -160,7 +181,6 @@ export class UsgApp extends Provider {
 			autorun(() => {
 				this.state.selectedCountry;
 				this.closeDetails();
-				// this.shadowRoot.getElementById('current-country').focus();
 			})
 		);
 	}
@@ -178,7 +198,6 @@ export class UsgApp extends Provider {
 				console.log('FOCUSED', this.shadowRoot.activeElement);
 			});
 		} else {
-			// this.shadowRoot.getElementById('common-skills-definition').blur();
 			setTimeout(() => {
 				this.previouslyActiveElement?.focus();
 			});
