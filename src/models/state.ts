@@ -178,7 +178,12 @@ export class State {
 			});
 		}
 
-		return new Set(filteredEntries.map(entry => entry.Country).flat());
+		return new Set(
+			filteredEntries
+				.map(entry => entry.Country)
+				.flat()
+				.filter(country => country !== 'Globally')
+		);
 	}
 
 	get projectsByCountry() {
