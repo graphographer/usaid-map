@@ -24,16 +24,16 @@ $enable-important: false;
 // Config
 @import "~@picocss/pico/scss/variables";
 
-// Theming
-@import "./custom-pico-theme.scss";
-
 // Modules
 @import '~@picocss/pico/scss/components/modal';
 @import '~@picocss/pico/scss/components/accordion';
 @import '~@picocss/pico/scss/components/card';
 
+// Theming
+@import "./custom-pico-theme.scss";
+
 // // Layout
-@import "~@picocss/pico/scss/layout/document"; // html
+@import "./document.scss"; // html
 @import "~@picocss/pico/scss/layout/sectioning"; // body, header, main, footer
 @import "~@picocss/pico/scss/layout/container"; // .container, .container-fluid
 @import "~@picocss/pico/scss/layout/section"; // section

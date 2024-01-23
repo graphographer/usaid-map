@@ -1,7 +1,7 @@
 import { State, stateProvider } from '../models/state';
 import '../components/UsgApp.mjs';
 import { TDataEntries } from '../models/types';
-import 'style-loader!../components/styles/light-dom.css';
+// import '../components/styles/shadow-dom.css';
 
 async function start() {
 	const usgData = (await import('../data/usaid_data.csv'))

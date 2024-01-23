@@ -1,17 +1,5 @@
 @import './custom-pico.scss';
 
-:host {
-    --h2-color: var(--usaid-blue);
-
-    --color: var(--rich-black);
-
-    --primary: var(--light-gray);
-    --primary-hover: var(--medium-gray);
-    --primary-inverse: var(--usaid-blue);
-
-    --table-border-color: var(--rich-black);
-}
-
 .info {
     font-size: 90%;
 }
@@ -31,6 +19,7 @@ button.link {
     cursor: pointer;
     width: unset;
 }
+
 button.link:hover {
     text-decoration: underline;
 }
