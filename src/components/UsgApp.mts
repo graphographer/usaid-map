@@ -82,7 +82,7 @@ export class UsgApp extends Provider {
 											class="link info"
 											data-target="#common-skills-definition"
 										>
-											?
+											&#9432;
 											<span class="sr-only">Definition of "Common Skills"</span>
 										</button></sup
 									>

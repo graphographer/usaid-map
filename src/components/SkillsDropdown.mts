@@ -10,11 +10,9 @@ export class SkillsDropdown extends Provider {
 		return html`
 			<label for="common-skills">
 				Common Skills
-				<em
-					><button data-target="#common-skills-definition" class="link">
-						? <span class="sr-only">"Common Skills" defintion</span>
-					</button></em
-				>
+				<button data-target="#common-skills-definition" class="link">
+					ⓘ <span class="sr-only">Defintion of "Common Skills"</span>
+				</button>
 				<select id="common-skills" @change=${this.handleChange}>
 					<option disabed selected value="">None Selected</option>
 					${this.state.allSkills.map(
